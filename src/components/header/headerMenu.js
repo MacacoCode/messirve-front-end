@@ -1,5 +1,6 @@
 import React from 'react';
 import { Menu } from 'antd';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 import SearchBar from './searchBar';
 import logo from '../../img/logo.png'
 
@@ -27,15 +28,18 @@ const HeaderMenu = () => {
       <Menu.Item key="about" style={{ float: 'left' }}>
         About
       </Menu.Item>
-      <Menu.Item style={{ width: '50%', marginTop: 10 }} >
+      <Menu.Item style={{ width: '50%', marginTop: 10 }}>
         <SearchBar />
       </Menu.Item>
       <Menu.Item key="logIn" style={{ float: 'right' }}>
         Log In
-        </Menu.Item>
+      </Menu.Item>
       <Menu.Item key="signIn" style={{ float: 'right' }}>
         Sign In
-        </Menu.Item>
+      </Menu.Item>
+      <Menu.Item key="shoppingCart" style={{ float: 'right' }}>
+        <ShoppingCartOutlined />
+      </Menu.Item>
     </Menu>
   );
 };
