@@ -24,12 +24,12 @@ const PostGrid = () => {
       isResizable={false}
       isDraggable={false}
     >
-      <div key='1' style={{ width:'100%', height:'100%' }}> <Post /> </div>
-      <div key='2' style={{ width:'100%', height:'100%' }}> <Post /> </div>
-      <div key='3' style={{ width:'100%', height:'100%' }}> <Post /> </div>
-      <div key='4' style={{ width:'100%', height:'100%' }}> <Post /> </div>
-      <div key='5' style={{ width:'100%', height:'100%' }}> <Post /> </div>
-      <div key='6' style={{ width:'100%', height:'100%' }}> <Post /> </div>
+      <div key='1' style={{ width:'100%', height:'100%' }}> <Post title="UwU" image="image" /> </div>
+      <div key='2' style={{ width:'100%', height:'100%' }}> <Post title="UwU" image="image" /> </div>
+      <div key='3' style={{ width:'100%', height:'100%' }}> <Post title="UwU" image="image" /> </div>
+      <div key='4' style={{ width:'100%', height:'100%' }}> <Post title="UwU" image="image" /> </div>
+      <div key='5' style={{ width:'100%', height:'100%' }}> <Post title="UwU" image="image" /> </div>
+      <div key='6' style={{ width:'100%', height:'100%' }}> <Post title="UwU" image="image" /> </div>
     </ReactGridLayout>
   );
 };

@@ -3,12 +3,11 @@ import { Card } from 'antd';
 import './styles.css'
 
 
-const Post = () => {
+const Post = ({ title, image, description }) => {
   return (
-    <Card title="Post" extra={<a href="#">More</a>} style={{ width: 300 }}>
-      <p>Title</p>
-      <p>Image</p>
-      <p>Description</p>
+    <Card title={title} extra={<a href="#">More</a>} style={{ width: 300 }}>
+      <p>{image}</p>
+      <p>{description}</p>
     </Card>
   );
 };
