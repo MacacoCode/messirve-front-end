@@ -7,7 +7,6 @@ const Header = () => {
   return (
     <div>
       <HeaderMenu />
-      <SearchBar />
     </div>
   );
 };
