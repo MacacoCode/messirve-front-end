@@ -8,7 +8,7 @@ const { SubMenu } = Menu;
 
 const HeaderMenu = () => {
   return (
-    <Menu mode="horizontal" theme="light">
+    <Menu defaultSelectedKeys={['home']} mode="horizontal" theme="light">
       <Menu.Item key="logo" style={{ float: 'left' }}>
         <img src={logo} alt="Logo" width="120" height="auto" />
       </Menu.Item>
