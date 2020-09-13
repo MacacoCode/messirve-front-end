@@ -9,7 +9,7 @@ const SearchBar = () => {
   return (
     <Search
       style={{ textAlign:'center' }}
-      placeholder="Search Whatever The Fuck You Fucking Want"
+      placeholder="Busca Lo Que Quieras!"
       enterButton
     />
   );
