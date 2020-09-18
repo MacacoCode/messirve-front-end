@@ -8,6 +8,7 @@ const { SubMenu } = Menu;
 
 const HeaderMenu = () => {
   return (
+    <div>
     <Menu defaultSelectedKeys={['home']} mode="horizontal" theme="light">
       <Menu.Item key="logo" style={{ float: 'left' }}>
         <img src={logo} alt="Logo" width="120" height="auto" />
@@ -29,9 +30,9 @@ const HeaderMenu = () => {
       <Menu.Item key="about" style={{ float: 'left' }}>
         About Us
       </Menu.Item>
-      <Menu.Item style={{ width: '50%', marginTop: 10 }}>
+      {/*<Menu.Item style={{ width:'50%', marginTop: 10 }}>
         <SearchBar />
-      </Menu.Item>
+      </Menu.Item>*/}
       <Menu.Item key="logIn" style={{ float: 'right' }}>
         Iniciar Sesion
       </Menu.Item>
@@ -42,6 +43,10 @@ const HeaderMenu = () => {
         <ShoppingCartOutlined style={{ fontSize: '1.4em' }} />
       </Menu.Item>
     </Menu>
+    <div style={{ marginRight: 'auto', marginLeft: 'auto', width: '50%' }}>
+    <SearchBar />
+    </div>
+    </div>
   );
 };
 
