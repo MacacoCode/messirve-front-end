@@ -74,13 +74,13 @@ const PostGrid = () => {
       breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
       cols={{lg: 10, md: 10, sm: 6, xs: 4, xxs: 4}}
       layouts={postLayouts}
-      rowHeight={50}
+      rowHeight={60}
       isResizable={false}
       isDraggable={false}
       style={{ margin: 15 }}
       onBreakpointChange={breakPointChange}
     >
-      <div key='7'> <h2 style={{ textAlign: 'center', borderLeft: 'outset' }}>Tendencias</h2> </div>
+      <div key='7'> <h2 style={{ textAlign: 'center', borderLeft: 'outset' }}>Categorias</h2> </div>
       <div key='8'> <Post type="tendencia" title="Futbol" image={post8} /> </div>
 
       <div style={currentCols < 6 ? {display:'none'} : null} key='9'> <Post type="tendencia" title="Volleyball" image={post9} /> </div>

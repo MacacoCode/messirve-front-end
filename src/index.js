@@ -4,10 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import "antd/dist/antd.css";
+import HomePage from './pages/HomePage';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App>
+      <HomePage />
+    </App>
   </React.StrictMode>,
   document.getElementById('root')
 );

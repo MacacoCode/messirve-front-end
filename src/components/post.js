@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Col, Row, Tag } from 'antd';
 import './styles.css'
 
 const imageSizing = {
@@ -26,7 +26,18 @@ const Post = ({ title, image, description, type }) => {
     >
       <img style={type === 'tendencia' ? imageSizingTendency : imageSizing} src={image} />
       {type === 'tendencia' ? (null) : (
-        <p style={{ textAlign: 'left' }}>Descripcion Breve</p>
+        <div>
+          <Row justify="center">
+            <Tag color="green">Fitness</Tag>
+            <Tag color="black">Messirve</Tag>
+          </Row>
+          <Row>
+            <Col span={8}>Precio: $5.00</Col>
+            <Col span={8} offset={8}>By: Sportline America</Col>
+          </Row>
+          <br />
+          <p style={{ textAlign: 'left' }}>Lorem ipsum dolor sit amet, consectetur...</p>
+        </div>
       )}
     </Card>
   );

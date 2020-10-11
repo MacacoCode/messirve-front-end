@@ -1,11 +1,12 @@
 import React from 'react';
-import HomePage from './pages/HomePage';
+import Header from './components/header/header';
 import "antd/dist/antd.css";
 
-function App() {
+function App({children}) {
   return (
     <div className="App">
-      <HomePage />
+      <Header />
+      {children}
     </div>
   );
 }

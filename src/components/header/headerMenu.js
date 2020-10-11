@@ -16,7 +16,7 @@ const HeaderMenu = () => {
       <Menu.Item key="home" style={{ float: 'left' }}>
         Home
       </Menu.Item>
-      <SubMenu title="Fitness" style={{ float: 'left' }}>
+      <SubMenu title="Categorias" style={{ float: 'left' }}>
         <Menu.ItemGroup title="Vestimenta">
           <Menu.Item key="setting:1">Calzado</Menu.Item>
           <Menu.Item key="setting:2">Camisas</Menu.Item>
