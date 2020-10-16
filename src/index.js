@@ -1,15 +1,38 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import "antd/dist/antd.css";
-import HomePage from './pages/HomePage';
+import Header from './components/header/header';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
+import { Spin } from 'antd'
+
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const SearchPage = React.lazy(() => import('./pages/SearchPage'));
+const ProductoPage = React.lazy(() => import('./pages/ProductoPage'));
 
 ReactDOM.render(
   <React.StrictMode>
     <App>
-      <HomePage />
+      <Suspense fallback={<Spin />}>
+        <Router>
+          <Header />
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+          <Switch>
+            <Route exact path="/home" component={HomePage} />
+            <Route path="/search" component={SearchPage} />
+            <Route path="/producto/:productoId?" component={ProductoPage} />
+          </Switch>
+        </Router>
+      </Suspense>
     </App>
   </React.StrictMode>,
   document.getElementById('root')

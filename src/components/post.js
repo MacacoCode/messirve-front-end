@@ -16,11 +16,11 @@ const imageSizingTendency = {
   width: '100%'
 }
 
-const Post = ({ title, image, description, type }) => {
+const Post = ({ fullPost, title, image, description, type, marca }) => {
   return (
     <Card
       title={title}
-      extra={<a href="#">More</a>}
+      extra={!fullPost ? <a href="#">More</a> : null}
       style={{ width:'100%', height:'100%' }}
       bodyStyle={{ textAlign: 'center' }}
     >
@@ -33,10 +33,14 @@ const Post = ({ title, image, description, type }) => {
           </Row>
           <Row>
             <Col span={8}>Precio: $5.00</Col>
-            <Col span={8} offset={8}>By: Sportline America</Col>
+            <Col span={8} offset={8}>Marca: {!marca ? "Sportline" : marca }</Col>
           </Row>
           <br />
-          <p style={{ textAlign: 'left' }}>Lorem ipsum dolor sit amet, consectetur...</p>
+          {!description ? (
+            <p style={{ textAlign: 'left' }}>Lorem ipsum dolor sit amet, consectetur...</p>
+          ) : (
+            <p style={{ textAlign: 'left' }}>{description}</p>
+          )}
         </div>
       )}
     </Card>
