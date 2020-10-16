@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input, Cascader, Row, Col } from 'antd';
 import '../styles.css';
+import { useHistory } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 
 const { Search } = Input;
  
 const SearchBar = ({ categorias, subCategorias }) => {
   let options = [{ value: "Todo", label: "Todo" }];
+  const history = useHistory();
+  const [ filter, setFilter ] = useState(["Todo"]);
 
   if (categorias) {
     options = options.concat(categorias.map((categoria) => ({
@@ -19,6 +23,11 @@ const SearchBar = ({ categorias, subCategorias }) => {
         }))
     })));
   }
+  const search = (value) => {
+    if (filter[0] === "Todo" && !isEmpty(value)) history.push(`/search/producto=${value}`)
+    else if (filter.length === 2 && !isEmpty(value)) history.push(`/search/producto=${value}/categoria=${filter[0]}/subcategoria=${filter[1]}`)
+    else if (filter.length === 1 && !isEmpty(value)) history.push(`/search/producto=${value}/categoria=${filter[0]}`)
+  };
 
   return (
     <Row>
@@ -26,9 +35,11 @@ const SearchBar = ({ categorias, subCategorias }) => {
         <Cascader
           options={options}
           expandTrigger="hover"
-          defaultValue={["Todo"]}
+          defaultValue={filter}
           style={{ width: '6em' }}
           allowClear={false}
+          value={filter}
+          onChange={(value) => setFilter(value)}
         />
       </Col>
       <Col span={12}>
@@ -36,6 +47,7 @@ const SearchBar = ({ categorias, subCategorias }) => {
           style={{ textAlign:'center' }}
           placeholder="Busca Lo Que Quieras!"
           enterButton
+          onSearch={search}
         />
       </Col>
     </Row>

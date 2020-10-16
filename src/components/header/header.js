@@ -3,6 +3,7 @@ import HeaderMenu from './headerMenu';
 import '../styles.css';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
+import { BackTop } from 'antd';
 
 const Header = ({ setCategorias, setSubCategorias, setMarcas }) => {
   useEffect(() => {
@@ -19,6 +20,7 @@ const Header = ({ setCategorias, setSubCategorias, setMarcas }) => {
   return (
     <div>
       <HeaderMenu />
+      <BackTop />
     </div>
   );
 };
