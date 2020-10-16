@@ -12,22 +12,22 @@ const HomeBanner = ({}) => {
   const [currentBanner, changeBannerTo] = useState();
 
   const onChange = (page) => {
-    console.log(page);
     changePagination(page)
   };
-useEffect(() => {
-    switch(currentPagination) {
-        case 1:
-            changeBannerTo(homeBanner);
-            break;
-        case 2:
-            changeBannerTo(homeBanner2);
-            break;
-        case 3:
-            changeBannerTo(homeBanner3);
-            break;
-    }
-}, [currentPagination])
+  useEffect(() => {
+      switch(currentPagination) {
+          case 1:
+              changeBannerTo(homeBanner);
+              break;
+          case 2:
+              changeBannerTo(homeBanner2);
+              break;
+          case 3:
+              changeBannerTo(homeBanner3);
+              break;
+      }
+  }, [currentPagination]);
+
   return (
     <div>
     <ReactGridLayout

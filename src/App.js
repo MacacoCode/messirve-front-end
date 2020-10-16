@@ -1,12 +1,14 @@
 import React from 'react';
-import Header from './components/header/header';
 import "antd/dist/antd.css";
+import { Provider } from 'unistore/react';
+import { store } from './store'
 
 function App({children}) {
   return (
     <div className="App">
-      <Header />
-      {children}
+      <Provider store={store}>
+        {children}
+      </Provider>
     </div>
   );
 }
