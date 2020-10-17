@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, Row, Tag } from 'antd';
+import { Card, Col, Row, Tag, Rate } from 'antd';
 import './styles.css'
 
 const imageSizing = {
@@ -34,8 +34,8 @@ const Post = ({ fullPost, title, image, description, type, marca }) => {
           <Row>
             <Col span={8}>Precio: $5.00</Col>
             <Col span={8} offset={8}>Marca: {!marca ? "Sportline" : marca }</Col>
+            <Rate allowHalf defaultValue={4.5} />
           </Row>
-          <br />
           {!description ? (
             <p style={{ textAlign: 'left' }}>Lorem ipsum dolor sit amet, consectetur...</p>
           ) : (

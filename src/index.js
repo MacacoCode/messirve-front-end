@@ -28,7 +28,7 @@ ReactDOM.render(
           </Route>
           <Switch>
             <Route exact path="/home" component={HomePage} />
-            <Route path="/search" component={SearchPage} />
+            <Route path="/search/:producto?/:categoria?/:subcategoria?" component={SearchPage} />
             <Route path="/producto/:productoId?" component={ProductoPage} />
           </Switch>
         </Router>

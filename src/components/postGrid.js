@@ -18,11 +18,11 @@ import post9 from '../img/volleyball.jpg';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const lgmdLayout = [
-  { i: '7', x: 0, y: 0, h: 2, w: 4 },
+  { i: '7', x: 0, y: 0, h: 1, w: 4 },
   { i: '8', x: 0, y: 1, h: 9, w: 4 },
   { i: '9', x: 0, y: 2, h: 9, w: 4 },
   { i: '10', x: 0, y: 3, h: 1, w: 4 },
-  { i: '0', x: 4, y: 0, h: 2, w: 6 },
+  { i: '0', x: 4, y: 0, h: 1, w: 6 },
   { i: '1', x: 4, y: 1, h: 6, w: 3 },
   { i: '2', x: 7, y: 1, h: 6, w: 3 },
   { i: '3', x: 4, y: 2, h: 6, w: 3 },
@@ -57,7 +57,6 @@ const xsxxsLayout = [
 
 const postLayouts = {
   lg: lgmdLayout,
-  md: lgmdLayout,
   sm: smLayout,
   xs: xsxxsLayout,
   xxs: xsxxsLayout,
@@ -71,8 +70,8 @@ const PostGrid = () => {
   };
   return (
     <ResponsiveGridLayout
-      breakpoints={{lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0}}
-      cols={{lg: 10, md: 10, sm: 6, xs: 4, xxs: 4}}
+      breakpoints={{lg: 1200, sm: 768, xs: 480, xxs: 0}}
+      cols={{lg: 10, sm: 6, xs: 4, xxs: 4}}
       layouts={postLayouts}
       rowHeight={60}
       isResizable={false}
