@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React from 'react';
 import { Menu } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import SearchBar from './searchBar';
@@ -8,12 +8,11 @@ import { connect } from 'unistore/react';
 
 const { SubMenu } = Menu;
 
-const HeaderMenu = ({ categorias, subCategorias }) => {
-  const pathname = window.location.pathname;
+const HeaderMenu = ({ location, categorias, subCategorias }) => {
 
   return (
     <div>
-    <Menu selectedKeys={[pathname]} defaultSelectedKeys={['home']} mode="horizontal" theme="light">
+    <Menu selectedKeys={[location.pathname]} defaultSelectedKeys={['home']} mode="horizontal" theme="light">
       <Menu.Item key="logo" style={{ float: 'left' }}>
         <img src={logo} alt="Logo" width="120" height="auto" />
       </Menu.Item>
@@ -46,16 +45,18 @@ const HeaderMenu = ({ categorias, subCategorias }) => {
         <SearchBar />
       </Menu.Item>*/}
       <Menu.Item key="/login" style={{ float: 'right' }}>
-        Iniciar Sesion
+        <Link to="/login">Iniciar Sesion</Link>
       </Menu.Item>
       <Menu.Item key="/signin" style={{ float: 'right' }}>
         Registrarse
       </Menu.Item>
-      <Menu.Item disabled key="/shoppingCart" style={{ float: 'right', marginTop: 2 }}>
-        <ShoppingCartOutlined style={{ fontSize: '1.4em' }} />
+      <Menu.Item key="/carrito" style={{ float: 'right', marginTop: 2 }}>
+        <Link to="/carrito">
+          <ShoppingCartOutlined style={{ fontSize: '1.4em' }} />
+        </Link>
       </Menu.Item>
     </Menu>
-    {<SearchBar categorias={categorias} subCategorias={subCategorias} />}
+    <SearchBar categorias={categorias} subCategorias={subCategorias} />
     </div>
   );
 };

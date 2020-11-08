@@ -1,38 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import Post from '../post';
 import { useParams } from 'react-router-dom';
-import { connect } from 'unistore/react';
-import { isEmpty } from 'lodash';
 import { Col } from 'antd';
+// import useWindowSize from './hooks/'
 
-const Producto = ({ marcas }) => {
+const Producto = () => {
   const params = useParams();
   const [producto, setProducto] = useState();
-  const [marca, setMarca] = useState(); 
+  // const size = useWindowSize();
 
   useEffect(() => {
-    if (params.productoId && !isEmpty(marcas)) {
+    if (params.productoId) {
       fetch(`http://localhost:8000/api/productos/${params.productoId}`)
         .then((res) => res.json())
         .then((data) => {
           setProducto(data);
-          console.log(marcas.find((m) => m.id === data.idMarca))
-          setMarca(marcas.find((m) => m.id === data.idMarca));
         });
     }
-  }, [params.productoId, marcas]);
+  }, [params.productoId]);
 
   return(
-    producto && marca ? (
+    producto ? (
       <Col offset={9} span={6}>
         <Post
             title={producto.nombre}
             description={producto.descripcion}
-            marca={marca.nombre}
+            marca={producto.marca?.nombre}
         />
      </Col>
     ) : (null)
   );
 };
 
-export default connect('marcas')(Producto);
+export default Producto;
