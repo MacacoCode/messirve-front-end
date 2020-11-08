@@ -1,11 +1,7 @@
 import React from 'react';
-import { Card, Col, Row } from 'antd';
+import { Card, Row, Col } from 'antd';
 import { FacebookFilled, InstagramFilled, TwitterSquareFilled } from '@ant-design/icons';
-import { Responsive, WidthProvider } from 'react-grid-layout';
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-
-const ResponsiveGridLayout = WidthProvider(Responsive);
+import useWindowSize from '../../hooks/useWindowSize';
 
 const wrapper = {
   backgroundColor: '#fcb131',
@@ -20,51 +16,64 @@ const cardStyle = {
   fontSize: '1.1em'
 }
 
-const layouts = {
-  sm: [
-  { i: '1', x: 0, y: 0, h: 1, w: 1 },
-  { i: '2', x: 1, y: 0, h: 1, w: 1 },
-  { i: '3', x: 2, y: 0, h: 1, w: 1 },
-  ],
-  xs: [
-  { i: '1', x: 0, y: 0, h: 1, w: 1 },
-  { i: '2', x: 0, y: 1, h: 1, w: 1 },
-  { i: '3', x: 0, y: 2, h: 1, w: 1 },
-  ],
+const Footer = () => {
+  const windowSize = useWindowSize();
+  console.log(windowSize.width)
+  return (
+    <div style={wrapper}>
+      {windowSize.width > 700 ? (
+        <Row>
+          <Col span={8}>
+            <Card title="Más información" style={cardStyle} bordered={false}>
+              <p>Integrarse</p>
+              <p>Blog</p>
+              <p>Acerca de Nosotros</p>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title="Contacto y Legal" style={cardStyle} bordered={false}>
+              <p>Contactar a Soporte</p>
+              <p>Terminos y Condiciones</p>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title="Nuestras Redes!" style={cardStyle} bordered={false}>
+              {windowSize.width > 900 ? (
+                <>
+                  <FacebookFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
+                  <InstagramFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
+                  <TwitterSquareFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
+                </>
+              ) : (
+                <>
+                  <Row style={{ marginBottom: 5 }}><FacebookFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} /></Row>
+                  <Row style={{ marginBottom: 5 }}><InstagramFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} /></Row>
+                  <Row style={{ marginBottom: 5 }}><TwitterSquareFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} /></Row>
+                </>
+              )}
+            </Card>
+          </Col>
+        </Row>
+      ) : (
+        <>
+          <Card title="Más información" style={cardStyle} bordered={false}>
+            <p>Integrarse</p>
+            <p>Blog</p>
+            <p>Acerca de Nosotros</p>
+          </Card>
+          <Card title="Contacto y Legal" style={cardStyle} bordered={false}>
+            <p>Contactar a Soporte</p>
+            <p>Terminos y Condiciones</p>
+          </Card>
+          <Card title="Nuestras Redes!" style={cardStyle} bordered={false}>
+            <FacebookFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
+            <InstagramFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
+            <TwitterSquareFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
+          </Card>
+        </>
+      )}
+    </div>
+  );
 };
-
-const Footer = () => (
-  <div style={wrapper}>
-    <ResponsiveGridLayout
-      breakpoints={{ sm: 768, xs: 480 }}
-      cols={{sm: 3, xs: 1}}
-      layouts={layouts}
-      isResizable={false}
-      isDraggable={false}
-      rowHeight={280}
-    >
-      <div key="1">
-        <Card title="Más información" style={cardStyle} bordered={false}>
-          <p>Integrarse</p>
-          <p>Blog</p>
-          <p>Acerca de Nosotros</p>
-        </Card>
-      </div>
-      <div key="2">
-        <Card title="Contacto y Legal" style={cardStyle} bordered={false}>
-          <p>Contactar a Soporte</p>
-          <p>Terminos y Condiciones</p>
-        </Card>
-      </div>
-      <div key="3">
-        <Card title="Nuestras Redes!" style={cardStyle} bordered={false}>
-          <FacebookFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
-          <InstagramFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
-          <TwitterSquareFilled style={{ fontSize: '2.8em', paddingRight:'0.4em' }} />
-        </Card>
-      </div>
-    </ResponsiveGridLayout>
-  </div>
-);
 
 export default Footer;
