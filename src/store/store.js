@@ -6,6 +6,7 @@ const defaultState = {
   categorias: [],
   subCategorias: [],
   marcas: [],
+  cantidadProductoCarrito: 0,
 };
 
 const store = devtools(createStore(defaultState));

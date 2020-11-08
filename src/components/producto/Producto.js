@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Post from '../post';
 import { useParams } from 'react-router-dom';
-import { Col } from 'antd';
-// import useWindowSize from './hooks/'
+import useWindowSize from '../../hooks/useWindowSize';
 
 const Producto = () => {
   const params = useParams();
   const [producto, setProducto] = useState();
-  // const size = useWindowSize();
+  const windowSize = useWindowSize();
 
   useEffect(() => {
     if (params.productoId) {
@@ -21,13 +20,14 @@ const Producto = () => {
 
   return(
     producto ? (
-      <Col offset={9} span={6}>
+      <div style={{ width: windowSize.width > 500 ? 400 : 300,  display: 'flex', justifyContent: 'center', margin: 'auto' }}>
         <Post
-            title={producto.nombre}
-            description={producto.descripcion}
-            marca={producto.marca?.nombre}
+          producto={producto}
+          title={producto.nombre}
+          description={producto.descripcion}
+          marca={producto.marca?.nombre}
         />
-     </Col>
+     </div>
     ) : (null)
   );
 };

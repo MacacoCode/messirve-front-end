@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Select } from 'antd';
+import { actions } from '../../store';
+import { connect } from 'unistore/react';
 
 const { Option } = Select;
 
-const CantidadSelector = () => {
+const CantidadSelector = ({ setCantidadProductoCarrito }) => {
   const [value, setValue] = useState(1);
   const valueObj = { value: value, label: `Cant...: ${value}` };
   const handleChange = (val) => {
     setValue(val.value);
+    setCantidadProductoCarrito(val.value)
   };
 
   return (
@@ -33,4 +36,4 @@ const CantidadSelector = () => {
   );
 };
 
-export default CantidadSelector;
+export default connect('', actions)(CantidadSelector);

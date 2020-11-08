@@ -22,7 +22,6 @@ const SearchPage= () => {
     }
   }, [params]);
 
-  console.log(foundProductos)
   return(
     <>
       <Row>
@@ -32,6 +31,8 @@ const SearchPage= () => {
         {foundProductos && foundProductos.map((producto) => (
           <Col span={6}>
             <Post
+              producto={producto}
+              id={producto.id}
               title={producto.nombre}
               description={producto.descripcion}
               marca={producto.marca?.nombre}

@@ -12,7 +12,7 @@ import post4 from '../img/protein.png';
 import post5 from '../img/parallets.jpg';
 import post6 from '../img/zapatos.jpg';
 import post8 from '../img/messi.jpg';
-import post9 from '../img/volleyball.jpg';
+import post9 from '../img/calistenia.jpg';
 
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -82,7 +82,7 @@ const PostGrid = () => {
       <div key='7'> <h2 style={{ textAlign: 'center', borderLeft: 'outset' }}>Categorias</h2> </div>
       <div key='8'> <Post type="tendencia" title="Futbol" image={post8} /> </div>
 
-      <div style={currentCols < 6 ? {display:'none'} : null} key='9'> <Post type="tendencia" title="Volleyball" image={post9} /> </div>
+      <div style={currentCols < 6 ? {display:'none'} : null} key='9'> <Post type="tendencia" title="Calistenia" image={post9} /> </div>
 
       <div key='10'> <Pagination current={1} size="small" style={{ textAlign: '-webkit-center' }} total={50} /> </div>
       <div key='0'> <h2 style={{ textAlign: 'center', borderLeft: 'outset' }}>Nuevo En La Tienda</h2> </div>

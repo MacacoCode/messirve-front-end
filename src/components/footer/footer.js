@@ -18,7 +18,6 @@ const cardStyle = {
 
 const Footer = () => {
   const windowSize = useWindowSize();
-  console.log(windowSize.width)
   return (
     <div style={wrapper}>
       {windowSize.width > 700 ? (

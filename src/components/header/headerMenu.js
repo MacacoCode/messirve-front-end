@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import SearchBar from './searchBar';
 import logo from '../../img/logo.png'
 import { Link } from 'react-router-dom';
 import { connect } from 'unistore/react';
+import Login from '../authentication/Login';
 
 const { SubMenu } = Menu;
 
 const HeaderMenu = ({ location, categorias, subCategorias }) => {
+  const [loginVisible, setLoginVisible] = useState(false);
+
+  const handleLoginClick = () => {
+    if (loginVisible === false) setLoginVisible(true)
+  }
 
   return (
     <div>
@@ -44,10 +50,11 @@ const HeaderMenu = ({ location, categorias, subCategorias }) => {
       {/*<Menu.Item style={{ width:'50%', marginTop: 10 }}>
         <SearchBar />
       </Menu.Item>*/}
-      <Menu.Item key="/login" style={{ float: 'right' }}>
-        <Link to="/login">Iniciar Sesion</Link>
+      <Menu.Item onClick={handleLoginClick} key="/login" style={{ float: 'right' }}>
+        Iniciar Sesion
+        <Login visible={loginVisible} setVisible={setLoginVisible} />
       </Menu.Item>
-      <Menu.Item key="/signin" style={{ float: 'right' }}>
+      <Menu.Item key="/sign-in" style={{ float: 'right' }}>
         Registrarse
       </Menu.Item>
       <Menu.Item key="/carrito" style={{ float: 'right', marginTop: 2 }}>
