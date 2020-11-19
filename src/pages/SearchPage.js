@@ -36,6 +36,7 @@ const SearchPage= () => {
               title={producto.nombre}
               description={producto.descripcion}
               marca={producto.marca?.nombre}
+              image={producto.imagenes_set[0]?.imagen}
             />
           </Col>
         ))}

@@ -5,12 +5,13 @@ import { connect } from 'unistore/react';
 
 const { Option } = Select;
 
-const CantidadSelector = ({ setCantidadProductoCarrito }) => {
-  const [value, setValue] = useState(1);
+const CantidadSelector = ({ setCantidadProductoCarrito, val, setVal, itemId }) => {
+  const [value, setValue] = useState(val || 1);
   const valueObj = { value: value, label: `Cant...: ${value}` };
-  const handleChange = (val) => {
-    setValue(val.value);
-    setCantidadProductoCarrito(val.value)
+  const handleChange = (v) => {
+    setValue(v.value);
+    if (setCantidadProductoCarrito) setCantidadProductoCarrito(v.value);
+    if (setVal && itemId) setVal(itemId, v.value)
   };
 
   return (
@@ -18,7 +19,6 @@ const CantidadSelector = ({ setCantidadProductoCarrito }) => {
       labelInValue
       size="small"
       style={{ width: 100 }}
-      labelInValue
       value={valueObj}
       onChange={handleChange}
       listHeight={128}

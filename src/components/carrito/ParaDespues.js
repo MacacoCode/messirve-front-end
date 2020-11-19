@@ -3,53 +3,45 @@ import {
   Card, Row, Col, Button, Image,
   Divider, message
 } from 'antd';
-import CantidadSelector from './CantidadSelector';
 import { Link } from 'react-router-dom';
-import { isEqual, isEmpty, findIndex } from 'lodash';
+import { isEqual, isEmpty } from 'lodash';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
 
-const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems }) => {
-  const [localCarrito, setLocalCarrito] = useState(carrito || []);
+const ParaDespues = ({ paraDespues, carrito, setParaDespuesItems, setCarritoItems }) => {
+  const [localParaDespues, setLocalParaDespues] = useState(paraDespues || []);
 
-  const deleteFromCarrito = (item) => {
-    const updatedLocalCarrito = localCarrito.filter((i) => !isEqual(i, item));
-    localStorage.setItem('messirve-shop-carrito', JSON.stringify(updatedLocalCarrito));
-    setLocalCarrito(updatedLocalCarrito);
-    setCarritoItems(updatedLocalCarrito);
+  const deleteFromParaDespues = (item) => {
+    const updatedLocalParaDespues = localParaDespues.filter((i) => !isEqual(i, item));
+    localStorage.setItem('messirve-shop-carrito', JSON.stringify(updatedLocalParaDespues));
+    setLocalParaDespues(updatedLocalParaDespues);
+    setParaDespuesItems(updatedLocalParaDespues);
     message.success("Producto Eliminado")
   };
-  const moveToParaDespues = (item) => {
-    const foundInParaDespues = paraDespues.find((i) => isEqual(i, item));
-    if (isEmpty(foundInParaDespues)) {
-      const filteredLocalCarrito = localCarrito.filter((i) => !isEqual(i, item));
-      setLocalCarrito(filteredLocalCarrito);
-      localStorage.setItem('messirve-shop-carrito', JSON.stringify(filteredLocalCarrito));
-      setCarritoItems(filteredLocalCarrito);
-      localStorage.setItem('messirve-shop-para-despues', JSON.stringify([...paraDespues, item]));
-      setParaDespuesItems([...paraDespues, item]);
-      message.success("Guardado Para Despues")
+  const moveToCarrito = (item) => {
+    const foundInCarrito = carrito.find((i) => isEqual(i, item));
+    console.log(foundInCarrito)
+    if (isEmpty(foundInCarrito)) {
+      const filteredLocalParaDespues = localParaDespues.filter((i) => !isEqual(i, item));
+      setLocalParaDespues(filteredLocalParaDespues);
+      localStorage.setItem('messirve-shop-para-despues', JSON.stringify(filteredLocalParaDespues));
+      setParaDespuesItems(filteredLocalParaDespues);
+      localStorage.setItem('messirve-shop-carrito', JSON.stringify([...carrito, item]));
+      setCarritoItems([...carrito, item]);
+      message.success("Movido al Carrito")
     } else {
-      message.error("Mismo producto ya esta en Para Despues")
+      message.error("Mismo producto ya esta en el Carrito")
     }
-  };
-  const setVal = (itemId, value) => {
-    const item = localCarrito.find((i) => i.id = itemId);
-    item.cantidad = value;
-    const index = findIndex(localCarrito, (i) => i.id = itemId);
-    localCarrito[index] = item;
-    setLocalCarrito(localCarrito);
-    setCarritoItems(localCarrito);
-    localStorage.setItem('messirve-shop-carrito', JSON.stringify(localCarrito));
   };
 
   useEffect(() => {
-    setLocalCarrito(carrito);
-  }, [carrito])
+    setLocalParaDespues(paraDespues);
+  }, [paraDespues])
+
   return (
     <>
-      <Card title="Carrito" style={{ margin: 20 }}>
-        {localCarrito?.map((item) => (
+      <Card title="Para Despues" style={{ margin: 20 }}>
+        {localParaDespues?.map((item) => (
           <Card 
             // style={{ marginTop: 16 }}
             type="inner"
@@ -70,23 +62,19 @@ const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems })
                   <Col span={22}>{item.descripcion}</Col>
                   <Col span={2}>
                       <Row>
-                        <Col>Precio</Col>
+                          <Col>Precio</Col>
                       </Row>
                       <Row>
-                        <Col style={{ borderTop: '1px solid grey' }}>
-                          <h3><b>US$69.69</b></h3>
-                        </Col>
+                          <Col style={{ borderTop: '1px solid grey' }}>
+                            <h3><b>US$69.69</b></h3>
+                          </Col>
                       </Row>
                   </Col>
                 </Row>
                 <Row style={{ paddingTop: 10 }}>
                   <Col>
-                    <CantidadSelector itemId={item.id} setVal={setVal} val={item.cantidad} />
-                    <Divider type="vertical" />
-                  </Col>
-                  <Col>
                     <Button
-                      onClick={() => deleteFromCarrito(item)}
+                      onClick={() => deleteFromParaDespues(item)}
                       type="primary"
                       danger 
                       size="small" 
@@ -98,12 +86,13 @@ const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems })
                   </Col>
                   <Col>
                     <Button
-                      onClick={() => moveToParaDespues(item)}
+                      onClick={() => moveToCarrito(item)}
+                      style={{ backgroundColor: '#1a991c', borderColor: '#1a991c' }}
                       type="primary"
                       size="small"
                       shape="round"
                     >
-                      Guardar Para Despues
+                      Agregar Al Carrito
                     </Button>
                     <Divider type="vertical" />
                   </Col>
@@ -112,34 +101,9 @@ const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems })
             </Row>
           </Card>
         ))}
-        {!isEmpty(localCarrito) && (
-          <Row>
-            <Col offset={21}>
-              <Row>
-                <Col>Sub-Total</Col>
-              </Row>
-              <Row>
-                <Col style={{ borderTop: '1px solid grey' }}>
-                  <h2><b>US$69.69</b></h2>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Button
-                    style={{ backgroundColor: '#1a991c', borderColor: '#1a991c' }}
-                    type="primary"
-                    shape="round"
-                  >
-                    Check-Out
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        )}
       </Card>
     </>
   );
 };
 
-export default connect(['carrito', 'paraDespues'], actions)(Carrito);
+export default connect(['carrito', 'paraDespues'], actions)(ParaDespues);

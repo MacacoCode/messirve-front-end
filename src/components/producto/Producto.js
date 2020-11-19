@@ -8,6 +8,7 @@ const Producto = () => {
   const [producto, setProducto] = useState();
   const windowSize = useWindowSize();
 
+  console.log(producto)
   useEffect(() => {
     if (params.productoId) {
       fetch(`http://localhost:8000/api/productos/${params.productoId}`)
@@ -26,6 +27,7 @@ const Producto = () => {
           title={producto.nombre}
           description={producto.descripcion}
           marca={producto.marca?.nombre}
+          image={producto.imagenes_set[0]?.imagen}
         />
      </div>
     ) : (null)

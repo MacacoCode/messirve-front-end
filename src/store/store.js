@@ -6,6 +6,8 @@ const defaultState = {
   categorias: [],
   subCategorias: [],
   marcas: [],
+  carrito: JSON.parse(localStorage.getItem('messirve-shop-carrito')) || [],
+  paraDespues: JSON.parse(localStorage.getItem('messirve-shop-para-despues')) || [],
   cantidadProductoCarrito: 0,
 };
 
