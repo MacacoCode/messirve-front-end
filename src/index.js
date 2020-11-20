@@ -18,6 +18,7 @@ const HomePage = React.lazy(() => import('./pages/HomePage'));
 const SearchPage = React.lazy(() => import('./pages/SearchPage'));
 const ProductoPage = React.lazy(() => import('./pages/ProductoPage'));
 const CarritoPage = React.lazy(() => import('./pages/CarritoPage'));
+const CheckOutPage = React.lazy(() => import('./pages/CheckOutPage'));
 
 ReactDOM.render(
   <React.StrictMode>
@@ -33,6 +34,7 @@ ReactDOM.render(
             <Route path="/search/:producto?/:categoria?/:subcategoria?" component={SearchPage} />
             <Route path="/producto/:productoId?" component={ProductoPage} />
             <Route path="/carrito" component={CarritoPage} />
+            <Route path="/check-out" component={CheckOutPage} />
           </Switch>
           <Footer />
         </Router>

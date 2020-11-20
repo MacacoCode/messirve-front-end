@@ -3,18 +3,28 @@ import { Menu } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import SearchBar from './searchBar';
 import logo from '../../img/logo.png'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'unistore/react';
 import Login from '../authentication/Login';
+import { actions } from '../../store';
 
 const { SubMenu } = Menu;
 
-const HeaderMenu = ({ location, categorias, subCategorias }) => {
+const HeaderMenu = ({ location, categorias, subCategorias, setFilterActual }) => {
   const [loginVisible, setLoginVisible] = useState(false);
+  const history = useHistory();
 
   const handleLoginClick = () => {
-    if (loginVisible === false) setLoginVisible(true)
+    if (loginVisible === false) setLoginVisible(true);
   }
+
+  const buscarSubCategoria = (categoria, subCategoria) => {
+    setFilterActual([categoria, subCategoria]);
+    history.push(`/search/producto/categoria=${categoria}/subcategoria=${subCategoria}`);
+  };
+  const buscarCategoria = (categoria) => {
+    // history.push(`/search/producto/categoria=${categoria}`)
+  };
 
   return (
     <div>
@@ -36,10 +46,15 @@ const HeaderMenu = ({ location, categorias, subCategorias }) => {
           <Menu.Item key="setting:4">Proteina</Menu.Item>
         </SubMenu>*/}
         {categorias && categorias.map((categoria) => (
-          <SubMenu title={categoria.nombre}>
+          <SubMenu onTitleClick={() => buscarCategoria(categoria.nombre)} title={categoria.nombre}>
             {subCategorias && subCategorias.filter((subCategoria) => subCategoria.idCategoria === categoria.id)
             .map((subCategoria) => (
-            <Menu.Item key={`/${categoria.nombre}/${subCategoria.nombre}`}>{subCategoria.nombre}</Menu.Item>
+            <Menu.Item
+              onClick={() => buscarSubCategoria(categoria.nombre, subCategoria.nombre)}
+              key={`/${categoria.nombre}/${subCategoria.nombre}`}
+            >
+              {subCategoria.nombre}
+            </Menu.Item>
             ))}
           </SubMenu>
         ))}
@@ -68,4 +83,4 @@ const HeaderMenu = ({ location, categorias, subCategorias }) => {
   );
 };
 
-export default connect(['categorias', 'subCategorias'])(HeaderMenu);
+export default connect(['categorias', 'subCategorias'], actions)(HeaderMenu);

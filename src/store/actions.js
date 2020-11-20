@@ -7,6 +7,8 @@ const actions = {
   setCarritoItems: (_, newItem) => ({ carrito: newItem}),
   setParaDespuesItems: (_, newItem) => ({ paraDespues: newItem }),
   setCantidadProductoCarrito: (_, cantidad) => ({ cantidadProductoCarrito: cantidad }),
+  setFilterActual: (_, filter) => ({ filterActual: filter }),
+  setUser: (_, userData) => ({ user: userData }),
 };
 
 export default actions;

@@ -4,13 +4,17 @@ import {
   Divider, message
 } from 'antd';
 import CantidadSelector from './CantidadSelector';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { isEqual, isEmpty, findIndex } from 'lodash';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
 
-const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems }) => {
+const Carrito = ({
+  carrito, paraDespues, setCarritoItems, setParaDespuesItems,
+  user,
+}) => {
   const [localCarrito, setLocalCarrito] = useState(carrito || []);
+  const history = useHistory();
 
   const deleteFromCarrito = (item) => {
     const updatedLocalCarrito = localCarrito.filter((i) => !isEqual(i, item));
@@ -42,6 +46,14 @@ const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems })
     setCarritoItems(localCarrito);
     localStorage.setItem('messirve-shop-carrito', JSON.stringify(localCarrito));
   };
+
+  const handleMoveToCheckOut = () => {
+    if (user.accessToken) {
+      history.push('/check-out')
+    } else {
+      message.info('Please Login to Proceed to checkout')
+    }
+  }
 
   useEffect(() => {
     setLocalCarrito(carrito);
@@ -129,6 +141,7 @@ const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems })
                     style={{ backgroundColor: '#1a991c', borderColor: '#1a991c' }}
                     type="primary"
                     shape="round"
+                    onClick={handleMoveToCheckOut}
                   >
                     Check-Out
                   </Button>
@@ -142,4 +155,4 @@ const Carrito = ({ carrito, paraDespues, setCarritoItems, setParaDespuesItems })
   );
 };
 
-export default connect(['carrito', 'paraDespues'], actions)(Carrito);
+export default connect(['carrito', 'paraDespues', 'user'], actions)(Carrito);
