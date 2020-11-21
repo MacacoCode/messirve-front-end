@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Select } from 'antd';
-import { actions } from '../../store';
-import { connect } from 'unistore/react';
 
 const { Option } = Select;
 
@@ -36,4 +34,4 @@ const CantidadSelector = ({ setCantidadProductoCarrito, val, setVal, itemId }) =
   );
 };
 
-export default connect('', actions)(CantidadSelector);
+export default CantidadSelector;

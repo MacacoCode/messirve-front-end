@@ -8,6 +8,7 @@ const PriceRange = ({ checkable }) => {
   return (
     <Row>
             <InputNumber
+                style={{ width: '5em' }}
                 formatter={value => `C$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={value => value.replace(/[C]\$\s?|(,*)/g, '')}
                 size="small"
@@ -21,6 +22,7 @@ const PriceRange = ({ checkable }) => {
                 _
             </p>
             <InputNumber
+                style={{ width: '5em' }}
                 formatter={value => `C$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 parser={value => value.replace(/[C]\$\s?|(,*)/g, '')}
                 size="small"

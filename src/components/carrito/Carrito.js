@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, Row, Col, Button, Image,
+  Card, Row, Col, Button, Image, Tag,
   Divider, message
 } from 'antd';
 import CantidadSelector from './CantidadSelector';
 import { Link, useHistory } from 'react-router-dom';
-import { isEqual, isEmpty, findIndex } from 'lodash';
+import { isEqual, isEmpty, findIndex, cloneDeep } from 'lodash';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
+import TagMedidas from '../TagMedidas';
 
 const Carrito = ({
   carrito, paraDespues, setCarritoItems, setParaDespuesItems,
   user,
 }) => {
   const [localCarrito, setLocalCarrito] = useState(carrito || []);
+  const [precios, setPrecios] = useState([]);
+  const [subTotal, setSubTotal] = useState(0);
   const history = useHistory();
 
   const deleteFromCarrito = (item) => {
@@ -37,27 +40,73 @@ const Carrito = ({
       message.error("Mismo producto ya esta en Para Despues")
     }
   };
+
+  const calculateSubTotal = () => {
+    let sum = 0;
+    for (let i=0; i<carrito.length; i+=1) {
+      if (!isEmpty(precios)) {
+        sum += precios[i].precio
+        setSubTotal(sum);
+      } else {
+        sum +=carrito[i].empresa.precioBase*carrito[i].cantidad
+        setSubTotal(sum);
+      }
+    }
+  };
+
+  const setPrecioIndividual = (itemId, value) => {
+    let arr = [];
+    for (let i=0; i<carrito.length; i+=1) {
+      const found = precios.find((p) => p.idProducto === carrito[i].id);
+      if (found && itemId === carrito[i].id) {
+        found.precio = carrito[i].empresa.precioBase*value;
+        const index = findIndex(precios, (o) => o.idProducto === found.idProducto);
+        const clone = cloneDeep(precios);
+        clone[index] = found;
+        setPrecios(clone);
+        return;
+      }
+      // este codigo esta bueno
+      if (!found && isEmpty(precios)) {
+        setPrecios([...arr, {idProducto: carrito[i].id, precio: carrito[i].empresa.precioBase*carrito[i].cantidad}]);
+        arr = [...arr, {idProducto: carrito[i].id, precio: carrito[i].empresa.precioBase*carrito[i].cantidad}]
+      }
+      
+    }
+  };
+
   const setVal = (itemId, value) => {
     const item = localCarrito.find((i) => i.id = itemId);
     item.cantidad = value;
+    setPrecioIndividual(itemId, value);
     const index = findIndex(localCarrito, (i) => i.id = itemId);
     localCarrito[index] = item;
     setLocalCarrito(localCarrito);
     setCarritoItems(localCarrito);
     localStorage.setItem('messirve-shop-carrito', JSON.stringify(localCarrito));
+    calculateSubTotal();
   };
 
   const handleMoveToCheckOut = () => {
-    if (user.accessToken) {
-      history.push('/check-out')
+    if (!user.accessToken) {
+      history.push('/orden/direccion')
     } else {
       message.info('Please Login to Proceed to checkout')
     }
   }
 
+  const getPrecio = (item) => {
+    const found = precios.find((p) => p.idProducto === item.id)
+    console.log(found, precios)
+    if(found) return found.precio
+  }
+
+
   useEffect(() => {
     setLocalCarrito(carrito);
-  }, [carrito])
+    setPrecioIndividual();
+    calculateSubTotal();
+  }, [carrito]);
   return (
     <>
       <Card title="Carrito" style={{ margin: 20 }}>
@@ -65,7 +114,15 @@ const Carrito = ({
           <Card 
             // style={{ marginTop: 16 }}
             type="inner"
-            title={item.nombre}
+            title={(
+              <> 
+                {item.nombre}
+                <Divider type="vertical" />
+                <Tag>{item.empresa.idEmpresa.nombre}</Tag>
+                <Divider type="vertical" />
+                <TagMedidas medidas={[item.medida]} />
+              </>
+            )}
             extra={<Link to={`/producto/${item.id}`}>Mas Info</Link>}
           >
             <Row>
@@ -86,7 +143,9 @@ const Carrito = ({
                       </Row>
                       <Row>
                         <Col style={{ borderTop: '1px solid grey' }}>
-                          <h3><b>US$69.69</b></h3>
+                          <h3><b>{item.empresa?.precioBase ? (
+                            `CS$${getPrecio(item)}`
+                           ) : "No Disponible"}</b></h3>
                         </Col>
                       </Row>
                   </Col>
@@ -132,7 +191,7 @@ const Carrito = ({
               </Row>
               <Row>
                 <Col style={{ borderTop: '1px solid grey' }}>
-                  <h2><b>US$69.69</b></h2>
+                  <h2><b>CS${subTotal|| 0.00}</b></h2>
                 </Col>
               </Row>
               <Row>
@@ -143,7 +202,7 @@ const Carrito = ({
                     shape="round"
                     onClick={handleMoveToCheckOut}
                   >
-                    Check-Out
+                    Ordenar
                   </Button>
                 </Col>
               </Row>

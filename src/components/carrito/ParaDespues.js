@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {
   Card, Row, Col, Button, Image,
-  Divider, message
+  Divider, message, Tag
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { isEqual, isEmpty } from 'lodash';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
+import TagMedidas from '../TagMedidas';
 
 const ParaDespues = ({ paraDespues, carrito, setParaDespuesItems, setCarritoItems }) => {
   const [localParaDespues, setLocalParaDespues] = useState(paraDespues || []);
@@ -20,7 +21,6 @@ const ParaDespues = ({ paraDespues, carrito, setParaDespuesItems, setCarritoItem
   };
   const moveToCarrito = (item) => {
     const foundInCarrito = carrito.find((i) => isEqual(i, item));
-    console.log(foundInCarrito)
     if (isEmpty(foundInCarrito)) {
       const filteredLocalParaDespues = localParaDespues.filter((i) => !isEqual(i, item));
       setLocalParaDespues(filteredLocalParaDespues);
@@ -45,7 +45,15 @@ const ParaDespues = ({ paraDespues, carrito, setParaDespuesItems, setCarritoItem
           <Card 
             // style={{ marginTop: 16 }}
             type="inner"
-            title={item.nombre}
+            title={(
+              <> 
+                {item.nombre}
+                <Divider type="vertical" />
+                <Tag>{item.empresa.idEmpresa.nombre}</Tag>
+                <Divider type="vertical" />
+                <TagMedidas medidas={[item.medida]} />
+              </>
+            )}
             extra={<Link to={`/producto/${item.id}`}>Mas Info</Link>}
           >
             <Row>
@@ -66,7 +74,7 @@ const ParaDespues = ({ paraDespues, carrito, setParaDespuesItems, setCarritoItem
                       </Row>
                       <Row>
                           <Col style={{ borderTop: '1px solid grey' }}>
-                            <h3><b>US$69.69</b></h3>
+                            <h3><b>{item.empresa?.precioBase ? `CS$${item.empresa.precioBase}` : "No Disponible"}</b></h3>
                           </Col>
                       </Row>
                   </Col>

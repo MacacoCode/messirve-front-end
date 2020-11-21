@@ -23,11 +23,13 @@ const Producto = () => {
     producto ? (
       <div style={{ width: windowSize.width > 500 ? 400 : 300,  display: 'flex', justifyContent: 'center', margin: 'auto' }}>
         <Post
+          noHeight
           producto={producto}
           title={producto.nombre}
           description={producto.descripcion}
           marca={producto.marca?.nombre}
           image={producto.imagenes_set[0]?.imagen}
+          medidas={producto.tallaproducto_set}
         />
      </div>
     ) : (null)

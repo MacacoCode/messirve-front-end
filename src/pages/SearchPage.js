@@ -25,18 +25,20 @@ const SearchPage= () => {
   return(
     <>
       <Row>
-        <Col span={4}>
+        <Col span={3}>
           <SearchFilters />
         </Col>
         {foundProductos && foundProductos.map((producto) => (
-          <Col span={6}>
+          <Col span={7}>
             <Post
+              noHeight
               producto={producto}
               id={producto.id}
               title={producto.nombre}
               description={producto.descripcion}
               marca={producto.marca?.nombre}
               image={producto.imagenes_set[0]?.imagen}
+              medidas={producto.tallaproducto_set}
             />
           </Col>
         ))}

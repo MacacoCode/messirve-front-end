@@ -6,7 +6,7 @@ import { connect } from 'unistore/react';
 import { actions } from '../store';
 
 const AddToCartModal = ({
-  visible, setVisible, producto, cantidadProductoCarrito,
+  visible, setVisible, producto, selectedEmpresa, selectedCantidad, selectedMedida,
   carrito, setCarritoItems,
 }) => {
   const addToCart = () => {
@@ -14,11 +14,12 @@ const AddToCartModal = ({
     .then((res) => res.json())
     .then((data) => console.log(data)) */
     const localCarrito = JSON.parse(localStorage.getItem('messirve-shop-carrito'));
-    producto.cantidad = cantidadProductoCarrito;
+    producto.cantidad = selectedCantidad;
+    producto.empresa = selectedEmpresa;
+    producto.medida = selectedMedida;
     if (localCarrito && !isEmpty(carrito)) {
       const findInLocalCarrito = localCarrito.find((item) => isEqual(item, producto));
       const findInCarrito = carrito.find((item) => isEqual(item, producto));
-      console.log(producto)
       if (!findInLocalCarrito || !findInCarrito) {
         localStorage.setItem('messirve-shop-carrito' , JSON.stringify([...carrito, producto]));
         setCarritoItems([...carrito, producto]);
@@ -40,10 +41,8 @@ const AddToCartModal = ({
       onOk={addToCart}
       onCancel={() => setVisible(false)}
       width={300}
-    >
-      <Form.Item label="Cantidad"><CantidadSelector /></Form.Item>
-    </Modal>
+    > <h3><b>¿Desea Agregar {producto && producto.nombre} al Carrito?</b></h3></Modal>
   );
 }
 
-export default connect(['cantidadProductoCarrito', 'carrito'], actions)(AddToCartModal);
+export default connect(['carrito'], actions)(AddToCartModal);

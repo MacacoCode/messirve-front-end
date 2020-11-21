@@ -1,5 +1,6 @@
 import React from 'react';
-import PostGrid from '../components/postGrid';
+import NuevoEnTienda from '../components/home/NuevoEnTienda';
+import Tendencias from '../components/home/Tendencias';
 import HomeBanner from '../components/HomeBanner';
 
 const HomePage = ({}) => {
@@ -7,7 +8,8 @@ const HomePage = ({}) => {
   return (
     <>
       <HomeBanner />
-      <PostGrid />
+      <Tendencias />
+      <NuevoEnTienda />
     </>
   );
 };
