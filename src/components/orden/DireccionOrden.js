@@ -19,7 +19,7 @@ const DireccionOrden = () => {
       <Divider />
       <Row>
         <Col offset={7} span={10}>
-          <Card title="Agregar una Direccion">
+          <Card title="Establecer una Direccion">
             <Form onFinish={handleFinish}>
                 <Form.Item name="pais" label="Pais o Region">
                     <Select disabled showSearch defaultValue={countryNames.find((country) => country === "Nicaragua")}>

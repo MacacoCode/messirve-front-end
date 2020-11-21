@@ -1,9 +1,6 @@
-import { Col, Row, Divider, Card, Image, Tag } from 'antd';
+import { Col, Row, Card, message } from 'antd';
 import React from 'react';
-import { connect } from 'unistore/react';
 import TagMedidas from '../TagMedidas';
-
-const style = { borderColor: 'grey' };
 
 const ResumenOrden = ({ direccion, carrito }) => {
   return (
@@ -52,4 +49,4 @@ const ResumenOrden = ({ direccion, carrito }) => {
   );
 };
 
-export default connect(['carrito', 'direccion'])(ResumenOrden);
+export default ResumenOrden;

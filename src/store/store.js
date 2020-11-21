@@ -10,6 +10,7 @@ const defaultState = {
   paraDespues: JSON.parse(localStorage.getItem('messirve-shop-para-despues')) || [],
   filterActual: [],
   user: {},
+  direccion: {},
 };
 
 const store = devtools(createStore(defaultState));

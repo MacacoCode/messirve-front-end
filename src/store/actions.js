@@ -8,6 +8,7 @@ const actions = {
   setParaDespuesItems: (_, newItem) => ({ paraDespues: newItem }),
   setFilterActual: (_, filter) => ({ filterActual: filter }),
   setUser: (_, userData) => ({ user: userData }),
+  setDireccion: (_, newDireccion) => ({ direccion: newDireccion }),
 };
 
 export default actions;
