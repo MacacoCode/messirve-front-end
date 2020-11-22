@@ -5,6 +5,7 @@ const { CheckableTag } = Tag;
 
 const TagMedidas = ({ medidas, selectedEmpresa, setSelectedMedida }) => {
   const [medida, setMedida] = useState(medidas && medidas ? [medidas[0].idtalla.id]: []);
+  const [thisMedidas, setThisMedidas] = useState(medidas);
   const handleChange = (me, checked) => {
     if (checked) {
         setMedida([me.idtalla.id])
@@ -15,12 +16,17 @@ const TagMedidas = ({ medidas, selectedEmpresa, setSelectedMedida }) => {
 
   };
 
-  /*useEffect(() => {
-    console.log(selectedEmpresa, medidas)
-  }, [selectedEmpresa])*/
+  useEffect(() => {
+    if (selectedEmpresa && medidas) {
+      const filteredMedidas = medidas.filter((m) => m.idEmpresa === selectedEmpresa.idEmpresa.id)
+      setThisMedidas(filteredMedidas)
+      setMedida([filteredMedidas[0].idtalla.id])
+      setSelectedMedida(filteredMedidas[0])
+    }
+  }, [selectedEmpresa])
   return (
     <>
-        {medidas?.map((me) => (
+        {thisMedidas?.map((me) => (
         <CheckableTag
             key={me.idtalla.id}
             checked={medida.indexOf(me.idtalla.id) > -1}

@@ -6,8 +6,10 @@ import { actions } from '../../store';
 import { BackTop } from 'antd';
 import { withRouter } from 'react-router-dom';
 
-const Header = withRouter(({ location, setCategorias, setSubCategorias, setMarcas }) => {
+const Header = withRouter(({ location, setCategorias, setSubCategorias, setMarcas, setUser }) => {
   useEffect(() => {
+    const userInLocal = localStorage.getItem('messirve-shop-user')
+    if (userInLocal) setUser(JSON.parse(userInLocal))
     fetch('http://localhost:8000/api/categorias')
       .then((res) => res.json())
       .then((data) => setCategorias(data));

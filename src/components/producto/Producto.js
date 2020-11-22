@@ -8,7 +8,6 @@ const Producto = () => {
   const [producto, setProducto] = useState();
   const windowSize = useWindowSize();
 
-  console.log(producto)
   useEffect(() => {
     if (params.productoId) {
       fetch(`http://localhost:8000/api/productos/${params.productoId}`)

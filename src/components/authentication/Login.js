@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import {
-  Card, Form, Alert, Button, Input
+  Card, Form, Button, Input, message
 } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Modal from 'antd/lib/modal/Modal';
+import { connect } from 'unistore/react';
+import { actions } from '../../store';
 
-const Login = ({ visible, setVisible }) => {
-  // the errorMessage when the user tries to login and something happens
-  const [errorMessage, setError] = useState();
+const Login = ({ visible, setVisible, setUser }) => {
 
   const submit = (values) => {
-    console.log(values)
+    fetch('http://localhost:8000/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values)
+    }).then((res) => res.json())
+      .then((data) => {
+        if (data.token) {
+          setVisible(false)
+          setTimeout(() => {
+            message.success("Ha ingresado a su cuenta correctamente!")
+            setUser(data)
+            localStorage.setItem('messirve-shop-user', JSON.stringify(data))
+          }, 1000)
+        }
+        if (data.detail) message.error(data.detail)
+      })
   }
 
   return (
@@ -25,19 +40,12 @@ const Login = ({ visible, setVisible }) => {
           <Form
             onFinish={submit}
           >
-            {/* <Form.Item
+            <Form.Item
                 label="E-Mail"
                 name="email"
                 rules={[{ required: true, message: 'Please input your Email!' }]}
             >
                 <Input prefix={<UserOutlined />} placeholder="E-Mail" />
-            </Form.Item> */}
-            <Form.Item
-                label="Username"
-                name="username"
-                rules={[{ required: true, message: 'Please input your Username!' }]}
-            >
-                <Input prefix={<UserOutlined />} placeholder="Username" />
             </Form.Item>
 
             <Form.Item
@@ -67,11 +75,9 @@ const Login = ({ visible, setVisible }) => {
                 </p>
             </Form.Item>
           </Form>
-          {/** If the error message exists then it will render this alert */}
-          {errorMessage ? <Alert closable onClose={() => setError()} type="error" message={errorMessage} /> : null}
         </Card>
     </Modal>
   );
 };
 
-export default Login;
+export default connect('', actions)(Login);

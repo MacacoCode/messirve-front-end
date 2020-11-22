@@ -7,7 +7,7 @@ import ResumenOrden from '../../components/orden/ResumenOrden';
 
 const ResumenOrdenPage = ({direccion, carrito}) => {
   const history = useHistory();
-  if (isEmpty(direccion)) {
+  if (!isEmpty(direccion)) {
     message.warning('Necesita ingresar una direccion de envío')
     history.push('/orden/direccion');
   }
