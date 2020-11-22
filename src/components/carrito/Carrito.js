@@ -81,7 +81,7 @@ const Carrito = ({
         return;
       }
       // este codigo esta bueno
-      if (!found && isEmpty(precios)) {
+      if (!found) {
         carrito[i].precio = parseInt(carrito[i].empresa.precioBase, 10)
         carrito[i].impuesto = carrito[i].empresa.precioBase*carrito[i].cantidad*0.15
         carrito[i].subTotal = carrito[i].empresa.precioBase*carrito[i].cantidad
@@ -102,12 +102,12 @@ const Carrito = ({
   };
 
   const setVal = (itemId, value, empresaId) => {
-    const item = localCarrito.find((i) => i.id === itemId);
+    const item = localCarrito.find((i) => i.id === itemId && i.empresa?.idEmpresa.id === empresaId);
     const copy = cloneDeep(item)
     copy.cantidad = value;
     setPrecioIndividual(itemId, value, empresaId);
     calculateSubTotal(itemId, value);
-    const index = findIndex(localCarrito, (i) => i.id === itemId);
+    const index = findIndex(localCarrito, (i) => i.id === itemId && i.empresa?.idEmpresa.id === empresaId);
     localCarrito[index] = copy;
     setLocalCarrito(localCarrito);
     setCarritoItems(localCarrito);
