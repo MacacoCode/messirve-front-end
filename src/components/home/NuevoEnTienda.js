@@ -74,7 +74,7 @@ const NuevoEnTienda = () => {
         <div style={currentCols < 6 ? {display:'none'} : null} key='5'> <Post title="Parallets" image={post5} /> </div>
         <div style={currentCols < 6 ? {display:'none'} : null} key='6'> <Post title="Zapatos" image={post6} /> </div>
         
-        <div key='11'> <Pagination current={1} size="small" style={{ textAlign: '-webkit-center' }} total={250} /> </div>
+        <div key='11'> <Pagination current={1} size="small" style={{ textAlign: '-webkit-center' }} pageSize={6} total={18} /> </div>
         </ResponsiveGridLayout>
     </>
   );

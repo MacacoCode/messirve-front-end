@@ -57,7 +57,7 @@ const Tendencias = () => {
 
         <div style={currentCols < 6 ? {display:'none'} : null} key='9'> <PostTendencia description="El arte de mover tu cuerpo" title="Calistenia" image={post9} /> </div>
 
-        <div key='10'> <Pagination current={1} size="small" style={{ textAlign: '-webkit-center' }} total={50} /> </div>
+        <div key='10'> <Pagination current={1} size="small" style={{ textAlign: '-webkit-center' }} pageSize={2} total={6}/> </div>
         </ResponsiveGridLayout>
     </>
   );
