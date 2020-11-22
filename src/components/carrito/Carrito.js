@@ -16,7 +16,7 @@ const Carrito = ({
 }) => {
   const [localCarrito, setLocalCarrito] = useState(carrito || []);
   const [precios, setPrecios] = useState([]);
-  const [subTotal, setSubTotal] = useState(0);
+  // const [subTotal, setSubTotal] = useState(detalleOrden.subTotal || 0);
   const history = useHistory();
 
   const deleteFromCarrito = (item) => {
@@ -41,20 +41,29 @@ const Carrito = ({
     }
   };
 
-  const calculateSubTotal = () => {
+  const calculateSubTotal = (itemId, value) => {
     let sum = 0;
     for (let i=0; i<carrito.length; i+=1) {
       const found = precios.find((p) => p.idProducto === carrito[i].id);
       if (found) {
-        sum += precios[i].precio
-        setSubTotal(sum);
+        if (itemId === found.idProducto) {
+          sum += carrito[i].empresa.precioBase*value
+          // setSubTotal(sum)
+        } else {
+          sum += found.precio
+          // setSubTotal(sum);
+        }
       } else {
         sum +=carrito[i].empresa.precioBase*carrito[i].cantidad
-        setSubTotal(sum);
+        // setSubTotal(sum);
       }
     }
-    setDetalleOrden({...detalleOrden, subTotal: sum, impuesto: sum*0.15, total: sum*1.15 })
-    localStorage.setItem('messirve-shop-detalleOrden', JSON.stringify({...detalleOrden, subTotal: sum, impuesto: sum*0.15, total: sum*1.15 }))
+    const impuesto = sum*0.15
+    const total = sum*1.15
+    setDetalleOrden({...detalleOrden, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
+    localStorage.setItem('messirve-shop-detalleOrden',
+      JSON.stringify({...detalleOrden, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
+    )
   };
 
   const setPrecioIndividual = (itemId, value) => {
@@ -88,7 +97,7 @@ const Carrito = ({
     const copy = cloneDeep(item)
     copy.cantidad = value;
     setPrecioIndividual(itemId, value);
-    calculateSubTotal();
+    calculateSubTotal(itemId, value);
     const index = findIndex(localCarrito, (i) => i.id === itemId);
     localCarrito[index] = copy;
     setLocalCarrito(localCarrito);
@@ -108,48 +117,6 @@ const Carrito = ({
     const found = precios.find((p) => p.idProducto === item.id)
     if(found) return found.precio
   }
-  const actualizarCarrito = async () => {
-  if (!isEmpty(user)) {
-      const foundOrden = user.user.orden_set.find((i) => i.estado === 'Carrito')
-      if (!isEmpty(foundOrden)) {
-        await fetch(`http://localhost:8000/api/orden/${foundOrden.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...detalleOrden
-          })
-        }).then((res) => res.json())
-          .then((data) => {
-            if (!data.id) message.error("Hubo un error actualizando el carrito")
-            if (data.id) {
-              setUser({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }})
-              localStorage.setItem('messirve-shop-user',
-                JSON.stringify({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }}) 
-              )
-            }
-          })
-      } else {
-        await fetch(`http://localhost:8000/api/orden`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            estado: 'Carrito',
-            ...detalleOrden,
-            subtotal: detalleOrden.subTotal,
-          })
-        }).then((res) => res.json())
-          .then((data) => {
-            if (!data.id) message.error("Hubo un error actualizando el carrito")
-            if (data.id) {
-              setUser({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }})
-              localStorage.setItem('messirve-shop-user',
-                JSON.stringify({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }}) 
-              )
-            }
-          })
-      }
-    }
-  }
 
   useEffect(() => {
     setLocalCarrito(carrito);
@@ -161,7 +128,7 @@ const Carrito = ({
   }, [carrito]);
   return (
     <>
-      <Card title="Carrito" extra={<Button onClick={actualizarCarrito}>Actualizar</Button>} style={{ margin: 20 }}>
+      <Card title="Carrito" style={{ margin: 20 }}>
         {localCarrito?.map((item) => (
           <Card 
             // style={{ marginTop: 16 }}
@@ -245,15 +212,15 @@ const Carrito = ({
             <Col> 
               <Row style={{ textAlign:'center' }}>
                 <Col>Sub-Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal|| 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleOrden.subTotal|| 0.00}</b></h2>
                 </Col>
               +
                 <Col>IVA
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal*0.15 || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleOrden.impuesto || 0.00}</b></h2>
                 </Col>
               =
                 <Col>Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal*1.15 || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleOrden.total|| 0.00}</b></h2>
                 </Col>
               </Row>
               <Col style={{ float: 'right' }}>

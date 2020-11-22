@@ -30,6 +30,30 @@ const Header = withRouter(({
       .then((res) => res.json())
       .then((data) => setMarcas(data));
   }, []);
+
+  useEffect(() => {
+    if (!isEmpty(user)) {
+      const foundOrden = user.user.orden_set.find((i) => i.estado === 'Carrito')
+      if (!isEmpty(foundOrden)) {
+        fetch(`http://localhost:8000/api/orden/${foundOrden.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...detalleOrden
+          })
+        }).then((res) => res.json())
+          .then((data) => {
+            if (!data.id) message.error("Hubo un error actualizando el carrito")
+            if (data.id) {
+              setUser({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }})
+              localStorage.setItem('messirve-shop-user',
+                JSON.stringify({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }}) 
+              )
+            }
+          })
+      }
+    } 
+  }, [detalleOrden])
   return (
     <div>
       <HeaderMenu location={location} />

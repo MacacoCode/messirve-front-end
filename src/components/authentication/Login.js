@@ -38,42 +38,42 @@ const Login = ({ visible, setVisible, setUser }) => {
       style={{ textAlign: '-webkit-center' }}
       footer={null}
     >
-        <Card title="Log In" style={{ width: '100%' }}>
+        <Card title="Iniciar Sesion" style={{ width: '100%' }}>
           <Form
             onFinish={submit}
           >
             <Form.Item
                 label="E-Mail"
                 name="email"
-                rules={[{ required: true, message: 'Please input your Email!' }]}
+                rules={[{ required: true, message: 'Por favor ingrese su E-Mail!' }]}
             >
                 <Input prefix={<UserOutlined />} placeholder="E-Mail" />
             </Form.Item>
 
             <Form.Item
-                label="Password"
+                label="Contraseña"
                 name="password"
-                rules={[{ required: true, message: 'Please input your Password!' }]}
+                rules={[{ required: true, message: 'Por favor ingrese su Contraseña!' }]}
             >
                 <Input.Password placeholder="********" />
             </Form.Item>
 
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                Submit
+                Enviar
                 </Button>
             </Form.Item>
 
             <Form.Item>
                 <p>
-                Forgot your password? Click
-                <Link to="/reset-password"> here </Link>
+                ¿Olvido su contraseña? Click
+                <Link to="/reset-password"> aqui </Link>
                 </p>
             </Form.Item>
             <Form.Item>
                 <p>
-                Don't have an account yet? Register
-                <Link to="/register"> here </Link>
+                ¿No tiene una cuenta todavia? Registrese
+                <Link to="/register"> aqui </Link>
                 </p>
             </Form.Item>
           </Form>

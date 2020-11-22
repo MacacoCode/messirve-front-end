@@ -6,6 +6,7 @@ import logo from '../../img/logo.png'
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'unistore/react';
 import Login from '../authentication/Login';
+import Regiser from '../authentication/Register';
 import { actions } from '../../store';
 import { isEmpty } from 'lodash';
 
@@ -91,8 +92,8 @@ const HeaderMenu = ({
       </Menu.Item>
       )}
       {isEmpty(user) && (
-      <Menu.Item key="/sign-in" style={{ float: 'right' }}>
-        Registrarse
+      <Menu.Item key="/registrarse" style={{ float: 'right' }}>
+        <Link to="/registrarse">Registrarse</Link>
       </Menu.Item>
       )}
       <Menu.Item key="/carrito" style={{ float: 'right', marginTop: 2 }}>
