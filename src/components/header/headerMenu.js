@@ -81,7 +81,7 @@ const HeaderMenu = ({
         )}
       {!isEmpty(user) && (
         <Menu.Item key="/cuenta" style={{ float: 'right' }}>
-          Cuenta
+          <b>Cuenta</b>
         </Menu.Item>
         )}
       {isEmpty(user) && (  

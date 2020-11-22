@@ -6,17 +6,21 @@ import { connect } from 'unistore/react';
 import DireccionOrden from '../../components/orden/DireccionOrden';
 import { actions } from '../../store';
 
-const DireccionPage = ({setDireccion, direccion, carrito}) => {
+const DireccionPage = ({setUser, user, carrito}) => {
   const history = useHistory();
   if (isEmpty(carrito)) {
     message.warning('No se han encontrado productos en su carrito')
     history.push('/carrito')
   }
+  if(isEmpty(user)) {
+    message.info('Por favor Inicie Sesion para proceder a ordenar')
+    history.push('/carrito')
+  }
   return (
     <>
-      <DireccionOrden setDireccion={setDireccion} direccion={direccion} />
+      <DireccionOrden user={user} />
     </>
   );
 };
 
-export default connect(['direccion', 'carrito'], actions)(DireccionPage);
+export default connect(['user', 'carrito'], actions)(DireccionPage);

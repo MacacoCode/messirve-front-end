@@ -12,7 +12,7 @@ import TagMedidas from '../TagMedidas';
 
 const Carrito = ({
   carrito, paraDespues, setCarritoItems, setParaDespuesItems,
-  user,
+  user, setDetalleOrden, detalleOrden, setUser,
 }) => {
   const [localCarrito, setLocalCarrito] = useState(carrito || []);
   const [precios, setPrecios] = useState([]);
@@ -44,7 +44,8 @@ const Carrito = ({
   const calculateSubTotal = () => {
     let sum = 0;
     for (let i=0; i<carrito.length; i+=1) {
-      if (!isEmpty(precios)) {
+      const found = precios.find((p) => p.idProducto === carrito[i].id);
+      if (found) {
         sum += precios[i].precio
         setSubTotal(sum);
       } else {
@@ -52,6 +53,8 @@ const Carrito = ({
         setSubTotal(sum);
       }
     }
+    setDetalleOrden({...detalleOrden, subTotal: sum, impuesto: sum*0.15, total: sum*1.15 })
+    localStorage.setItem('messirve-shop-detalleOrden', JSON.stringify({...detalleOrden, subTotal: sum, impuesto: sum*0.15, total: sum*1.15 }))
   };
 
   const setPrecioIndividual = (itemId, value) => {
@@ -59,57 +62,106 @@ const Carrito = ({
     for (let i=0; i<carrito.length; i+=1) {
       const found = precios.find((p) => p.idProducto === carrito[i].id);
       if (found && itemId === carrito[i].id) {
-        found.precio = carrito[i].empresa.precioBase*value;
-        const index = findIndex(precios, (o) => o.idProducto === found.idProducto);
+        const copy = cloneDeep(found);
+        copy.precio = carrito[i].empresa.precioBase*value;
+        const index = findIndex(precios, (o) => o.idProducto === copy.idProducto);
         const clone = cloneDeep(precios);
-        clone[index] = found;
+        clone[index] = copy;
         setPrecios(clone);
         return;
       }
       // este codigo esta bueno
       if (!found && isEmpty(precios)) {
+        carrito[i].precio = parseInt(carrito[i].empresa.precioBase, 10)
+        carrito[i].impuesto = carrito[i].empresa.precioBase*carrito[i].cantidad*0.15
+        carrito[i].subTotal = carrito[i].empresa.precioBase*carrito[i].cantidad
+        carrito[i].total = carrito[i].empresa.precioBase*carrito[i].cantidad*1.15
+        setCarritoItems([...carrito])
         setPrecios([...arr, {idProducto: carrito[i].id, precio: carrito[i].empresa.precioBase*carrito[i].cantidad}]);
         arr = [...arr, {idProducto: carrito[i].id, precio: carrito[i].empresa.precioBase*carrito[i].cantidad}]
       }
-      
     }
   };
 
   const setVal = (itemId, value) => {
-    const item = localCarrito.find((i) => i.id = itemId);
-    item.cantidad = value;
+    const item = localCarrito.find((i) => i.id === itemId);
+    const copy = cloneDeep(item)
+    copy.cantidad = value;
     setPrecioIndividual(itemId, value);
-    const index = findIndex(localCarrito, (i) => i.id = itemId);
-    localCarrito[index] = item;
+    calculateSubTotal();
+    const index = findIndex(localCarrito, (i) => i.id === itemId);
+    localCarrito[index] = copy;
     setLocalCarrito(localCarrito);
     setCarritoItems(localCarrito);
     localStorage.setItem('messirve-shop-carrito', JSON.stringify(localCarrito));
-    calculateSubTotal();
   };
 
   const handleMoveToCheckOut = () => {
-    if (!user.accessToken) {
+    if (user) {
       history.push('/orden/direccion')
     } else {
-      message.info('Please Login to Proceed to checkout')
+      message.info('Por favor Inicie Sesion para proceder a Ordenar')
     }
   }
 
   const getPrecio = (item) => {
     const found = precios.find((p) => p.idProducto === item.id)
-    console.log(found, precios)
     if(found) return found.precio
   }
-
+  const actualizarCarrito = async () => {
+  if (!isEmpty(user)) {
+      const foundOrden = user.user.orden_set.find((i) => i.estado === 'Carrito')
+      if (!isEmpty(foundOrden)) {
+        await fetch(`http://localhost:8000/api/orden/${foundOrden.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...detalleOrden
+          })
+        }).then((res) => res.json())
+          .then((data) => {
+            if (!data.id) message.error("Hubo un error actualizando el carrito")
+            if (data.id) {
+              setUser({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }})
+              localStorage.setItem('messirve-shop-user',
+                JSON.stringify({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }}) 
+              )
+            }
+          })
+      } else {
+        await fetch(`http://localhost:8000/api/orden`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            estado: 'Carrito',
+            ...detalleOrden,
+            subtotal: detalleOrden.subTotal,
+          })
+        }).then((res) => res.json())
+          .then((data) => {
+            if (!data.id) message.error("Hubo un error actualizando el carrito")
+            if (data.id) {
+              setUser({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }})
+              localStorage.setItem('messirve-shop-user',
+                JSON.stringify({...user, user: { ...user.user, orden_set: [...user.user.orden_set, data] }}) 
+              )
+            }
+          })
+      }
+    }
+  }
 
   useEffect(() => {
     setLocalCarrito(carrito);
-    setPrecioIndividual();
-    calculateSubTotal();
+    // const calculate = async () => {
+      setPrecioIndividual();
+      calculateSubTotal();
+    // }
+    // calculate()
   }, [carrito]);
   return (
     <>
-      <Card title="Carrito" style={{ margin: 20 }}>
+      <Card title="Carrito" extra={<Button onClick={actualizarCarrito}>Actualizar</Button>} style={{ margin: 20 }}>
         {localCarrito?.map((item) => (
           <Card 
             // style={{ marginTop: 16 }}
@@ -123,7 +175,11 @@ const Carrito = ({
                 <TagMedidas medidas={[item.medida]} />
               </>
             )}
-            extra={<Link to={`/producto/${item.id}`}>Mas Info</Link>}
+            extra={(
+              <>
+              <Link to={`/producto/${item.id}`}>Mas Info</Link>
+              </>
+            )}
           >
             <Row>
               <Col span={4}>
@@ -184,34 +240,39 @@ const Carrito = ({
           </Card>
         ))}
         {!isEmpty(localCarrito) && (
+          <div style={{  float: 'right'}}>
           <Row>
-            <Col offset={21}>
-              <Row>
-                <Col>Sub-Total</Col>
-              </Row>
-              <Row>
-                <Col style={{ borderTop: '1px solid grey' }}>
-                  <h2><b>CS${subTotal|| 0.00}</b></h2>
+            <Col> 
+              <Row style={{ textAlign:'center' }}>
+                <Col>Sub-Total
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal|| 0.00}</b></h2>
+                </Col>
+              +
+                <Col>IVA
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal*0.15 || 0.00}</b></h2>
+                </Col>
+              =
+                <Col>Total
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal*1.15 || 0.00}</b></h2>
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <Button
-                    style={{ backgroundColor: '#1a991c', borderColor: '#1a991c' }}
-                    type="primary"
-                    shape="round"
-                    onClick={handleMoveToCheckOut}
-                  >
-                    Ordenar
-                  </Button>
-                </Col>
-              </Row>
+              <Col style={{ float: 'right' }}>
+                <Button
+                  style={{ backgroundColor: '#1a991c', borderColor: '#1a991c' }}
+                  type="primary"
+                  shape="round"
+                  onClick={handleMoveToCheckOut}
+                >
+                  Ordenar
+                </Button>
+              </Col>
             </Col>
           </Row>
+          </div>
         )}
       </Card>
     </>
   );
 };
 
-export default connect(['carrito', 'paraDespues', 'user'], actions)(Carrito);
+export default connect(['carrito', 'paraDespues', 'user', 'detalleOrden'], actions)(Carrito);

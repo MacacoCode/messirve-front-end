@@ -5,10 +5,10 @@ import { connect } from 'unistore/react';
 import { message } from 'antd';
 import ResumenOrden from '../../components/orden/ResumenOrden';
 
-const ResumenOrdenPage = ({direccion, carrito}) => {
+const ResumenOrdenPage = ({user, carrito, ordenDireccion}) => {
   const history = useHistory();
-  if (!isEmpty(direccion)) {
-    message.warning('Necesita ingresar una direccion de envío')
+  if (isEmpty(ordenDireccion)) {
+    message.warning('Necesita comprobar direccion de envío')
     history.push('/orden/direccion');
   }
   if (isEmpty(carrito)) {
@@ -17,9 +17,9 @@ const ResumenOrdenPage = ({direccion, carrito}) => {
   }
   return (
     <>
-      <ResumenOrden direccion={direccion} carrito={carrito} />
+      <ResumenOrden user={user} carrito={carrito} />
     </>
   );
 };
 
-export default connect(['direccion', 'carrito'])(ResumenOrdenPage);
+export default connect(['user', 'carrito', 'ordenDireccion'])(ResumenOrdenPage);

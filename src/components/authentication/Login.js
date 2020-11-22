@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Modal from 'antd/lib/modal/Modal';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
+import jwt from 'jwt-decode';
 
 const Login = ({ visible, setVisible, setUser }) => {
 
@@ -21,7 +22,8 @@ const Login = ({ visible, setVisible, setUser }) => {
           setVisible(false)
           setTimeout(() => {
             message.success("Ha ingresado a su cuenta correctamente!")
-            setUser(data)
+            const decodedUser = jwt(data.token)
+            setUser({...decodedUser, token: data.token, user: data.user})
             localStorage.setItem('messirve-shop-user', JSON.stringify(data))
           }, 1000)
         }
