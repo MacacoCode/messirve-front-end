@@ -3,13 +3,13 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 
-const CantidadSelector = ({ setCantidadProductoCarrito, val, setVal, itemId }) => {
+const CantidadSelector = ({ setCantidadProductoCarrito, val, setVal, itemId, empresaId }) => {
   const [value, setValue] = useState(val || 1);
   const valueObj = { value: value, label: `Cant...: ${value}` };
   const handleChange = (v) => {
     setValue(v.value);
     if (setCantidadProductoCarrito) setCantidadProductoCarrito(v.value);
-    if (setVal && itemId) setVal(itemId, v.value)
+    if (setVal && itemId) setVal(itemId, v.value, empresaId)
   };
 
   return (

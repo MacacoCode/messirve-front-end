@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Menu, message } from 'antd';
+import { Menu, message, Badge } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import SearchBar from './searchBar';
 import logo from '../../img/logo.png'
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'unistore/react';
 import Login from '../authentication/Login';
-import Regiser from '../authentication/Register';
 import { actions } from '../../store';
 import { isEmpty } from 'lodash';
 
@@ -14,7 +13,7 @@ const { SubMenu } = Menu;
 
 const HeaderMenu = ({
   location, categorias, subCategorias, setFilterActual,
-  user, setUser
+  user, setUser, carrito,
 }) => {
   const [loginVisible, setLoginVisible] = useState(false);
   const history = useHistory();
@@ -98,7 +97,9 @@ const HeaderMenu = ({
       )}
       <Menu.Item key="/carrito" style={{ float: 'right', marginTop: 2 }}>
         <Link to="/carrito">
-          <ShoppingCartOutlined style={{ fontSize: '1.4em' }} />
+          <Badge size="small" style={{ backgroundColor: '#52c41a' }} count={carrito.length}>
+            <ShoppingCartOutlined style={{ fontSize: '1.4em' }} />
+          </Badge>
         </Link>
       </Menu.Item>
     </Menu>
@@ -107,4 +108,4 @@ const HeaderMenu = ({
   );
 };
 
-export default connect(['categorias', 'subCategorias', 'user'], actions)(HeaderMenu);
+export default connect(['categorias', 'subCategorias', 'user', 'carrito'], actions)(HeaderMenu);

@@ -10,7 +10,7 @@ const defaultState = {
   paraDespues: JSON.parse(localStorage.getItem('messirve-shop-para-despues')) || [],
   filterActual: [],
   user: {},
-  detalleOrden: JSON.parse(localStorage.getItem('messirve-shop-detalleOrden')) || {},
+  detalleCarrito: JSON.parse(localStorage.getItem('messirve-shop-detalleCarrito')) || {},
   ordenDireccion: {},  
 };
 

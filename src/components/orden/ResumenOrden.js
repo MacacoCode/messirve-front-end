@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'unistore/react';
 import TagMedidas from '../TagMedidas';
 
-const ResumenOrden = ({ ordenDireccion, user, carrito }) => {
+const ResumenOrden = ({ ordenDireccion, user, carrito, detalleCarrito }) => {
   const [subTotal, setSubTotal] = useState(0);
 
   const calculateSubTotal = () => {
@@ -91,15 +91,15 @@ const ResumenOrden = ({ ordenDireccion, user, carrito }) => {
             <Card>
               <Row style={{ textAlign:'center' }}>
                 <Col>Sub-Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal|| 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.subTotal || 0.00}</b></h2>
                 </Col>
               +
                 <Col>IVA
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal*0.15 || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.impuesto || 0.00}</b></h2>
                 </Col>
               =
                 <Col>Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${subTotal*1.15 || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.total || 0.00}</b></h2>
                 </Col>
               </Row>
             </Card> 
@@ -110,4 +110,4 @@ const ResumenOrden = ({ ordenDireccion, user, carrito }) => {
   );
 };
 
-export default connect('ordenDireccion')(ResumenOrden);
+export default connect(['ordenDireccion', 'detalleCarrito'])(ResumenOrden);

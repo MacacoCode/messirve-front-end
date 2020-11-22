@@ -12,11 +12,11 @@ import TagMedidas from '../TagMedidas';
 
 const Carrito = ({
   carrito, paraDespues, setCarritoItems, setParaDespuesItems,
-  user, setDetalleOrden, detalleOrden, setUser,
+  user, setdetalleCarrito, detalleCarrito, setUser,
 }) => {
   const [localCarrito, setLocalCarrito] = useState(carrito || []);
   const [precios, setPrecios] = useState([]);
-  // const [subTotal, setSubTotal] = useState(detalleOrden.subTotal || 0);
+  // const [subTotal, setSubTotal] = useState(detalleCarrito.subTotal || 0);
   const history = useHistory();
 
   const deleteFromCarrito = (item) => {
@@ -60,20 +60,21 @@ const Carrito = ({
     }
     const impuesto = sum*0.15
     const total = sum*1.15
-    setDetalleOrden({...detalleOrden, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
-    localStorage.setItem('messirve-shop-detalleOrden',
-      JSON.stringify({...detalleOrden, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
+    setdetalleCarrito({...detalleCarrito, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
+    localStorage.setItem('messirve-shop-detalleCarrito',
+      JSON.stringify({...detalleCarrito, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
     )
   };
 
-  const setPrecioIndividual = (itemId, value) => {
+  const setPrecioIndividual = (itemId, value, empresaId) => {
     let arr = [];
     for (let i=0; i<carrito.length; i+=1) {
-      const found = precios.find((p) => p.idProducto === carrito[i].id);
-      if (found && itemId === carrito[i].id) {
+      const found = precios.find((p) => p.idProducto === carrito[i].id && p.idEmpresa === carrito[i].empresa?.idEmpresa.id);
+      if (found && itemId === carrito[i].id && empresaId === carrito[i].empresa?.idEmpresa.id) {
+        console.log(found)
         const copy = cloneDeep(found);
         copy.precio = carrito[i].empresa.precioBase*value;
-        const index = findIndex(precios, (o) => o.idProducto === copy.idProducto);
+        const index = findIndex(precios, (o) => o.idProducto === copy.idProducto && o.idEmpresa === copy.idEmpresa);
         const clone = cloneDeep(precios);
         clone[index] = copy;
         setPrecios(clone);
@@ -86,17 +87,25 @@ const Carrito = ({
         carrito[i].subTotal = carrito[i].empresa.precioBase*carrito[i].cantidad
         carrito[i].total = carrito[i].empresa.precioBase*carrito[i].cantidad*1.15
         setCarritoItems([...carrito])
-        setPrecios([...arr, {idProducto: carrito[i].id, precio: carrito[i].empresa.precioBase*carrito[i].cantidad}]);
-        arr = [...arr, {idProducto: carrito[i].id, precio: carrito[i].empresa.precioBase*carrito[i].cantidad}]
+        setPrecios([...arr, {
+          idProducto: carrito[i].id,
+          precio: carrito[i].empresa.precioBase*carrito[i].cantidad,
+          idEmpresa: carrito[i].empresa?.idEmpresa.id
+        }]);
+        arr = [...arr, {
+          idProducto: carrito[i].id,
+          precio: carrito[i].empresa.precioBase*carrito[i].cantidad,
+          idEmpresa: carrito[i].empresa?.idEmpresa.id
+        }]
       }
     }
   };
 
-  const setVal = (itemId, value) => {
+  const setVal = (itemId, value, empresaId) => {
     const item = localCarrito.find((i) => i.id === itemId);
     const copy = cloneDeep(item)
     copy.cantidad = value;
-    setPrecioIndividual(itemId, value);
+    setPrecioIndividual(itemId, value, empresaId);
     calculateSubTotal(itemId, value);
     const index = findIndex(localCarrito, (i) => i.id === itemId);
     localCarrito[index] = copy;
@@ -114,7 +123,7 @@ const Carrito = ({
   }
 
   const getPrecio = (item) => {
-    const found = precios.find((p) => p.idProducto === item.id)
+    const found = precios.find((p) => p.idProducto === item.id && p.idEmpresa === item.empresa?.idEmpresa.id)
     if(found) return found.precio
   }
 
@@ -175,7 +184,7 @@ const Carrito = ({
                 </Row>
                 <Row style={{ paddingTop: 10 }}>
                   <Col>
-                    <CantidadSelector itemId={item.id} setVal={setVal} val={item.cantidad} />
+                    <CantidadSelector empresaId={item.empresa?.idEmpresa.id} itemId={item.id} setVal={setVal} val={item.cantidad} />
                     <Divider type="vertical" />
                   </Col>
                   <Col>
@@ -212,15 +221,15 @@ const Carrito = ({
             <Col> 
               <Row style={{ textAlign:'center' }}>
                 <Col>Sub-Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleOrden.subTotal|| 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.subTotal|| 0.00}</b></h2>
                 </Col>
               +
                 <Col>IVA
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleOrden.impuesto || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.impuesto || 0.00}</b></h2>
                 </Col>
               =
                 <Col>Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleOrden.total|| 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.total|| 0.00}</b></h2>
                 </Col>
               </Row>
               <Col style={{ float: 'right' }}>
@@ -242,4 +251,4 @@ const Carrito = ({
   );
 };
 
-export default connect(['carrito', 'paraDespues', 'user', 'detalleOrden'], actions)(Carrito);
+export default connect(['carrito', 'paraDespues', 'user', 'detalleCarrito'], actions)(Carrito);
