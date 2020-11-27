@@ -14,7 +14,7 @@ const ParaDespues = ({ paraDespues, carrito, setParaDespuesItems, setCarritoItem
 
   const deleteFromParaDespues = (item) => {
     const updatedLocalParaDespues = localParaDespues.filter((i) => !isEqual(i, item));
-    localStorage.setItem('messirve-shop-carrito', JSON.stringify(updatedLocalParaDespues));
+    localStorage.setItem('messirve-shop-para-despues', JSON.stringify(updatedLocalParaDespues));
     setLocalParaDespues(updatedLocalParaDespues);
     setParaDespuesItems(updatedLocalParaDespues);
     message.success("Producto Eliminado")

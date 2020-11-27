@@ -5,10 +5,11 @@ import useWindowSize from '../../hooks/useWindowSize';
 
 const wrapper = {
   backgroundColor: '#fcb131',
-  paddingTop: '4em',
+  zIndex: 9999,
 };
 
 const cardStyle = {
+  paddingTop: '2em',
   backgroundColor: '#fcb131',
   color: 'white',
   paddingLeft: '2em',

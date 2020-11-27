@@ -8,7 +8,7 @@ import PriceRange from './PriceRange';
 const SearchFilters = ({ categorias, subCategorias, marcas }) => {
 
   return(
-    <>
+    <div id="search-filters" style={{ position: 'fixed' }}>
     <Menu multiple mode="inline" selectable={false}>
         <Menu.ItemGroup key="rango-precios" title="Precio">
             {/*<Menu.Item key="price-range">*/
@@ -44,7 +44,7 @@ const SearchFilters = ({ categorias, subCategorias, marcas }) => {
             </Menu.Item>
         </Menu.ItemGroup>
     </Menu>
-    </>
+    </div>
   );
 };
 

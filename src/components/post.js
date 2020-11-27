@@ -54,9 +54,9 @@ const Post = ({
           <Row>
             {producto && (
               <Select onChange={handleSelectChange} style={{ marginLeft: 10 }} size="small" value={selectedEmpresa.idEmpresa.id}>
-                {producto.empresaproducto_set.map((emp) => (
-                  <Select.Option value={emp.idEmpresa.id}>
-                    {emp.idEmpresa.nombre}
+                {producto.empresaproducto_set?.map((emp) => (
+                  <Select.Option value={emp.idEmpresa?.id}>
+                    {emp.idEmpresa?.nombre}
                   </Select.Option>
                 ))}
               </Select>
@@ -116,7 +116,7 @@ const Post = ({
           <Row>
             <Col offset={5}>
               <CantidadSelector setCantidadProductoCarrito={setSelectedCantidad} />
-              {selectedMedida.cantidad && `/${selectedMedida.cantidad}`}
+              {selectedMedida?.cantidad && `/${selectedMedida.cantidad}`}
             </Col>
           </Row>
         </Col>

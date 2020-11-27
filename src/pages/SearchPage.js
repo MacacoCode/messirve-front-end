@@ -3,6 +3,7 @@ import { Col, Row } from 'antd';
 import SearchFilters from '../components/search/SearchFilters';
 import { useParams } from 'react-router-dom';
 import Post from '../components/post';
+import { findIndex } from 'lodash';
 
 const SearchPage= () => {
   const params = useParams();
@@ -23,25 +24,29 @@ const SearchPage= () => {
   }, [params]);
 
   return(
-    <>
+    <>          
+    <Col span={3}>
+      <SearchFilters />
+    </Col>
       <Row>
-        <Col span={3}>
-          <SearchFilters />
+        <Col offset={3}>
+          <Row>
+            {foundProductos && foundProductos.map((producto) => (
+              <Col span={7}>
+                <Post
+                  noHeight
+                  producto={producto}
+                  id={producto.id}
+                  title={producto.nombre}
+                  description={producto.descripcion}
+                  marca={producto.marca?.nombre}
+                  image={producto.imagenes_set[0]?.imagen}
+                  medidas={producto.tallaproducto_set}
+                />
+              </Col>
+            ))}
+          </Row>
         </Col>
-        {foundProductos && foundProductos.map((producto) => (
-          <Col span={7}>
-            <Post
-              noHeight
-              producto={producto}
-              id={producto.id}
-              title={producto.nombre}
-              description={producto.descripcion}
-              marca={producto.marca?.nombre}
-              image={producto.imagenes_set[0]?.imagen}
-              medidas={producto.tallaproducto_set}
-            />
-          </Col>
-        ))}
       </Row>
     </>
   );
