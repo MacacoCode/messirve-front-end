@@ -70,13 +70,14 @@ const Header = withRouter(({
       if (!isEmpty(foundOrden)) {
         Promise.all(
           carrito.map((item) => {
-            fetch(`http://localhost:8000/api/productoorden?idOrden=${foundOrden.id}&idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
+            /*fetch(`http://localhost:8000/api/productoorden?idOrden=${foundOrden.id}&idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
               .then((res) => res.json())
               .then((data1) => {
-                const [found] = data1;
-                const productoOrdenFound = item.producto_orden_set.find((i) => found.idProducto === i.idProducto && found.idEmpresa === i.idEmpresa)
-                if (productoOrdenFound) {
-                  fetch(`http://localhost:8000/api/productoorden/${productoOrdenFound.id}`, {
+                const [found] = data1; */
+                // const productoOrdenFound = item.producto_orden_set.find((i) => found.idProducto === i.idProducto && found.idEmpresa === i.idEmpresa)
+                console.log(item)
+                if (/*productoOrdenFound ||*/ item.idProductoOrden) {
+                  fetch(`http://localhost:8000/api/productoorden/${item.idProductoOrden}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -88,7 +89,7 @@ const Header = withRouter(({
                     })
                   }).then((res) => res.json())
                     .then((data) => {
-                      if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
+                      // if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
                       if (data.id) {
                         const foundInCarrito = carrito.find((i) => i.id === data.idProducto)
                         const index = findIndex(carrito, (i) => i.id === data.idProducto);
@@ -117,13 +118,15 @@ const Header = withRouter(({
                     })
                   }).then((res) => res.json())
                     .then((data) => {
-                      if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
+                      // if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
                       if (data.id) {
-                        const foundInCarrito = carrito.find((i) => i.id === data.idProducto)
+                        // const foundInCarrito = carrito.find((i) => i.id === data.idProducto && i.empresa.idEmpresa.id === data.idEmpresa)
                         const index = findIndex(carrito, (i) => i.id === data.idProducto);
-                        foundInCarrito.producto_orden_set = [...foundInCarrito.producto_orden_set, data];
-                        if (!isEqual(carrito[index], foundInCarrito )) {
-                          carrito[index] = foundInCarrito;
+                        item.producto_orden_set = [...item.producto_orden_set, data];
+                        if (isEqual(carrito[index], item )) {
+                          carrito[index] = item;
+                          carrito[index].idProductoOrden = data.id
+                          console.log(carrito[index])
                           setCarritoItems([...carrito])
                           localStorage.setItem('messirve-shop-carrito',
                             JSON.stringify([...carrito]) 
@@ -132,7 +135,7 @@ const Header = withRouter(({
                       }
                     })
                 }
-              })
+              // })
             //fetch
           })
         )

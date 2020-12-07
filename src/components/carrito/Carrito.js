@@ -21,19 +21,19 @@ const Carrito = ({
 
   const deleteFromDB = (item) => {
     const carritoBD = user.user.orden_set.find((o) => o.estado === 'Carrito')
-    fetch(`http://localhost:8000/api/productoorden?idOrden=${carritoBD.id}&idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
+    /*fetch(`http://localhost:8000/api/productoorden?idOrden=${carritoBD.id}&idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
       .then((res) => res.json())
       .then((data) => {
-        const [found] = data;
-        if (found.id) {
-          fetch(`http://localhost:8000/api/productoorden/${found.id}`, {
+        const [found] = data;*/
+        if (/*found.id*/ item.idProductoOrden) {
+          fetch(`http://localhost:8000/api/productoorden/${item.idProductoOrden}`, {
             method: 'DELETE', 
             headers: { 'Content-type': 'application/json' },
           }).then((res) => res.json())
           return true;
         } 
         return false;
-      })
+      // })
   };
 
   const deleteFromCarrito = (item) => {
@@ -51,18 +51,25 @@ const Carrito = ({
       message.error("Hubor un error elimando producto del carrito");
     }
   };
+
   const moveToParaDespues = (item) => {
-    const foundInParaDespues = paraDespues.find((i) => isEqual(i, item));
-    if (isEmpty(foundInParaDespues)) {
-      const filteredLocalCarrito = localCarrito.filter((i) => !isEqual(i, item));
-      setLocalCarrito(filteredLocalCarrito);
-      localStorage.setItem('messirve-shop-carrito', JSON.stringify(filteredLocalCarrito));
-      setCarritoItems(filteredLocalCarrito);
-      localStorage.setItem('messirve-shop-para-despues', JSON.stringify([...paraDespues, item]));
-      setParaDespuesItems([...paraDespues, item]);
-      message.success("Guardado Para Despues")
+    const moved = deleteFromDB(item);
+
+    if (moved) {
+      const foundInParaDespues = paraDespues.find((i) => isEqual(i, item));
+      if (isEmpty(foundInParaDespues)) {
+        const filteredLocalCarrito = localCarrito.filter((i) => !isEqual(i, item));
+        setLocalCarrito(filteredLocalCarrito);
+        localStorage.setItem('messirve-shop-carrito', JSON.stringify(filteredLocalCarrito));
+        setCarritoItems(filteredLocalCarrito);
+        localStorage.setItem('messirve-shop-para-despues', JSON.stringify([...paraDespues, item]));
+        setParaDespuesItems([...paraDespues, item]);
+        message.success("Guardado Para Despues")
+      } else {
+        message.error("Mismo producto ya esta en Para Despues")
+      }
     } else {
-      message.error("Mismo producto ya esta en Para Despues")
+      message.error("Hubo un error moviendo el producto para despues")
     }
   };
 

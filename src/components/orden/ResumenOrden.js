@@ -3,15 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'unistore/react';
 import TagMedidas from '../TagMedidas';
 import { isEmpty } from 'lodash';
-import { configConsumerProps } from 'antd/lib/config-provider';
+import { useParams } from 'react-router-dom';
 
 const ResumenOrden = ({
   ordenDireccion, user, carrito, detalleCarrito,
   altDetalle,
 }) => {
-  const [resumen, setResumen] = useState(!altDetalle ? carrito : []);
-  const [direc, setDirec] = useState(!altDetalle ? ordenDireccion : {})
-  const detalle = !altDetalle ? detalleCarrito : altDetalle;
+  const params = useParams();
+  const [resumen, setResumen] = useState(isEmpty(altDetalle) ? carrito : []);
+  const [direc, setDirec] = useState(isEmpty(altDetalle) ? ordenDireccion : altDetalle.direccion)
+  const [detalle, setDetalle] = useState(isEmpty(altDetalle) ? detalleCarrito : altDetalle);
   // const [subTotal, setSubTotal] = useState(0);
 
  /* const calculateSubTotal = () => {
@@ -28,16 +29,23 @@ const ResumenOrden = ({
       fetch(`http://localhost:8000/api/productoorden?idOrden=${altDetalle.id}`)
         .then((res) => res.json())
         .then((data) => setResumen(data));
+    } else if (params.idOrden) {
+      fetch(`http://localhost:8000/api/productoorden?idOrden=${params.idOrden}`)
+        .then((res) => res.json())
+        .then((data) => setResumen(data));
+        fetch(`http://localhost:8000/api/orden/${params.idOrden}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setDetalle(data)
+          setDirec(data.direccion)
+        });
     }
   }, [])
   return (
     <>
     <Card>
         <Row>
-          <Col span={12}>
-            <Card title="Producto/Precio" bodyStyle={{ display: 'none' }} />
-          </Col>
-          <Col span={12}>
+          <Col span={24}>
             <Card
               title="Direccion de Envío"
               // extra={<Button onClick={() => history.push('/orden/direccion')}>Modificar Direccion</Button>}
@@ -45,9 +53,40 @@ const ResumenOrden = ({
             />
           </Col>
         </Row>
+        <Row>
+        <Col span={24}>
+          <Card>
+              <Row>
+                  Nombre - {`${direc?.first_name} ${direc?.last_name}`}
+              </Row>
+              <Row>
+                  Direccion - {direc?.direccion?.direccion}
+              </Row>
+              <Row>
+                  Ciudad - {direc?.direccion?.ciudad}
+              </Row>
+              {direc?.direccion?.region && (
+                <Row>
+                  Region - {direc?.direccion?.region}
+                </Row>
+              )}
+              <Row>
+                  Postal - {direc?.direccion?.postal}
+              </Row>
+              <Row>
+                  Telefono - {direc?.telefono}
+              </Row>
+          </Card>
+        </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Card title="Producto/Precio" bodyStyle={{ display: 'none' }} />
+          </Col>
+        </Row>
         {resumen?.map((item) => (
           <Row>
-            <Col span={12} >
+            <Col span={24} >
             <Card id={`${item.nombre}-${item.id}`}>
               <Col>
                 <Row>
@@ -72,30 +111,6 @@ const ResumenOrden = ({
                 </Row>
               </Col>
               </Card>
-              </Col>
-              <Col span={12}>
-                <Card>
-                    <Row>
-                        Nombre - {`${direc.first_name} ${direc.last_name}`}
-                    </Row>
-                    <Row>
-                        Direccion - {direc.direccion?.direccion}
-                    </Row>
-                    <Row>
-                        Ciudad - {direc.direccion?.ciudad}
-                    </Row>
-                    {direc.direccion?.region && (
-                      <Row>
-                        Region - {direc.direccion?.region}
-                      </Row>
-                    )}
-                    <Row>
-                        Postal - {direc.direccion?.postal}
-                    </Row>
-                    <Row>
-                        Telefono - {direc.telefono}
-                    </Row>
-                </Card>
               </Col>
             </Row>
         ))}
