@@ -11,7 +11,8 @@ const defaultState = {
   filterActual: [],
   user: {},
   detalleCarrito: JSON.parse(localStorage.getItem('messirve-shop-detalleCarrito')) || {},
-  ordenDireccion: {},  
+  ordenDireccion: {},
+  altDetalle: {},
 };
 
 const store = devtools(createStore(defaultState));

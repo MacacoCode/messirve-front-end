@@ -10,6 +10,7 @@ const actions = {
   setUser: (_, userData) => ({ user: userData }),
   setDetalleCarrito: (_, newdetalleCarrito) => ({ detalleCarrito: newdetalleCarrito }),
   setOrdenDireccion: (_, newOrdenDireccion) => ({ ordenDireccion: newOrdenDireccion }),
+  setAltDetalle: (_, newAltDetalle) => ({ altDetalle: newAltDetalle }),
 };
 
 export default actions;

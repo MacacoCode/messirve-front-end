@@ -2,21 +2,36 @@ import { Col, Row, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'unistore/react';
 import TagMedidas from '../TagMedidas';
+import { isEmpty } from 'lodash';
+import { configConsumerProps } from 'antd/lib/config-provider';
 
-const ResumenOrden = ({ ordenDireccion, user, carrito, detalleCarrito }) => {
-  const [subTotal, setSubTotal] = useState(0);
+const ResumenOrden = ({
+  ordenDireccion, user, carrito, detalleCarrito,
+  altDetalle,
+}) => {
+  const [resumen, setResumen] = useState(!altDetalle ? carrito : []);
+  const [direc, setDirec] = useState(!altDetalle ? ordenDireccion : {})
+  const detalle = !altDetalle ? detalleCarrito : altDetalle;
+  // const [subTotal, setSubTotal] = useState(0);
 
-  const calculateSubTotal = () => {
+ /* const calculateSubTotal = () => {
     let sum = 0;
     for (let i=0; i<carrito.length; i+=1) {
       sum +=carrito[i].empresa.precioBase*carrito[i].cantidad
       setSubTotal(sum);
     }
-  };
+  }; */
 
   useEffect(() => {
-    calculateSubTotal();
-  }, [])
+    console.log("hell")
+    // calculateSubTotal();
+    if (!isEmpty(altDetalle)) {
+      console.log("hello")
+      fetch(`http://localhost:8000/api/productoorden?idOrden=${altDetalle.id}`)
+        .then((res) => res.json())
+        .then((data) => setResumen(data));
+    }
+  }, [altDetalle])
   return (
     <>
     <Card>
@@ -32,7 +47,7 @@ const ResumenOrden = ({ ordenDireccion, user, carrito, detalleCarrito }) => {
             />
           </Col>
         </Row>
-        {carrito?.map((item) => (
+        {resumen?.map((item) => (
           <Row>
             <Col span={12} >
             <Card id={`${item.nombre}-${item.id}`}>
@@ -63,24 +78,24 @@ const ResumenOrden = ({ ordenDireccion, user, carrito, detalleCarrito }) => {
               <Col span={12}>
                 <Card>
                     <Row>
-                        Nombre - {`${ordenDireccion.first_name} ${ordenDireccion.last_name}`}
+                        Nombre - {`${direc.first_name} ${direc.last_name}`}
                     </Row>
                     <Row>
-                        Direccion - {ordenDireccion.direccion?.direccion}
+                        Direccion - {direc.direccion?.direccion}
                     </Row>
                     <Row>
-                        Ciudad - {ordenDireccion.direccion?.ciudad}
+                        Ciudad - {direc.direccion?.ciudad}
                     </Row>
-                    {ordenDireccion.direccion?.region && (
+                    {direc.direccion?.region && (
                       <Row>
-                        Region - {ordenDireccion.direccion?.region}
+                        Region - {direc.direccion?.region}
                       </Row>
                     )}
                     <Row>
-                        Postal - {ordenDireccion.direccion?.postal}
+                        Postal - {direc.direccion?.postal}
                     </Row>
                     <Row>
-                        Telefono - {ordenDireccion.telefono}
+                        Telefono - {direc.telefono}
                     </Row>
                 </Card>
               </Col>
@@ -91,15 +106,15 @@ const ResumenOrden = ({ ordenDireccion, user, carrito, detalleCarrito }) => {
             <Card>
               <Row style={{ textAlign:'center' }}>
                 <Col>Sub-Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.subTotal || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalle.subtotal || detalle.subTotal || 0.00}</b></h2>
                 </Col>
               +
                 <Col>IVA
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.impuesto || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalle.impuesto || 0.00}</b></h2>
                 </Col>
               =
                 <Col>Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.total || 0.00}</b></h2>
+                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalle.total || 0.00}</b></h2>
                 </Col>
               </Row>
             </Card> 
@@ -110,4 +125,4 @@ const ResumenOrden = ({ ordenDireccion, user, carrito, detalleCarrito }) => {
   );
 };
 
-export default connect(['ordenDireccion', 'detalleCarrito'])(ResumenOrden);
+export default connect(['ordenDireccion', 'detalleCarrito', 'altDetalle'])(ResumenOrden);
