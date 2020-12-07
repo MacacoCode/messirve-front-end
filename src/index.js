@@ -21,6 +21,7 @@ const CarritoPage = React.lazy(() => import('./pages/CarritoPage'));
 const RegisterPage = React.lazy(() => import('./pages/RegisterPage'));
 const DireccionPage = React.lazy(() => import('./pages/orden-pages/DireccionPage'));
 const ResumenOrdenPage = React.lazy(() => import('./pages/orden-pages/ResumenOrdenPage'));
+const OrdenesPage = React.lazy(() => import('./pages/cuenta-pages/OrdenesPage'));
 
 ReactDOM.render(
   <React.StrictMode>
@@ -39,6 +40,7 @@ ReactDOM.render(
             <Route exact path="/registrarse" component={RegisterPage} />
             <Route exact path="/orden/direccion" component={DireccionPage} />
             <Route exact path="/orden/resumen-orden" component={ResumenOrdenPage} />
+            <Route exact path="/cuenta/ordenes" component={OrdenesPage}/>
           </Switch>
           <Footer />
         </Router>

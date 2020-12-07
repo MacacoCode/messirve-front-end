@@ -8,9 +8,8 @@ const bannerStyles = {
   display: 'block',
   marginLeft: 'auto',
   marginRight: 'auto',
-  width: '50%',
   height: '25em',
-  width: '99%',
+  width: '80%',
   marginTop: 10,
   marginBottom: 5,
 }

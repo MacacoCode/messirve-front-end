@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {
   Card, Col, Row, Tag, Rate,
-  Image, Button, Select, Divider
+  Image, Button, Select
 } from 'antd';
 import { Link } from 'react-router-dom';
 import AddToCartModal from './AddToCartModal';
 import './styles.css'
 import TagMedidas from './TagMedidas';
 import CantidadSelector from './carrito/CantidadSelector';
+import { connect } from 'unistore/react';
 
 const imageSizing = {
   maxWidth: '-webkit-fill-available',
@@ -18,7 +19,8 @@ const imageSizing = {
 
 const Post = ({
   noHeight, addDisabled,
-  producto, id, title, image, description, marca, medidas
+  producto, id, title, image, description, marca, medidas,
+  user,
 }) => {
   const [addToCartVisible, setAddToCartVisible] = useState(false);
 
@@ -67,7 +69,7 @@ const Post = ({
       extra={(
         <>
           <Button
-            disabled={addDisabled}
+            disabled={(user.empresa && true) || addDisabled}
             type="primary"
             size="small"
             shape="round"
@@ -131,4 +133,4 @@ const Post = ({
   );
 };
 
-export default Post;
+export default connect('user')(Post);

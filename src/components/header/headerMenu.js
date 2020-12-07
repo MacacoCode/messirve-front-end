@@ -8,6 +8,7 @@ import { connect } from 'unistore/react';
 import Login from '../authentication/Login';
 import { actions } from '../../store';
 import { isEmpty } from 'lodash';
+import MenuItem from 'antd/lib/menu/MenuItem';
 
 const { SubMenu } = Menu;
 
@@ -47,14 +48,14 @@ const HeaderMenu = ({
       <SubMenu title="Categorias" style={{ float: 'left' }}>
         {categorias && categorias.map((categoria) => (
           <SubMenu onTitleClick={() => buscarCategoria(categoria.nombre)} title={categoria.nombre}>
-            {subCategorias && subCategorias.filter((subCategoria) => subCategoria.idCategoria === categoria.id)
+            {subCategorias && subCategorias.filter((subCategoria) => subCategoria.idCategoria.id === categoria.id)
             .map((subCategoria) => (
-            <Menu.Item
-              onClick={() => buscarSubCategoria(categoria.nombre, subCategoria.nombre)}
-              key={`/${categoria.nombre}/${subCategoria.nombre}`}
-            >
-              {subCategoria.nombre}
-            </Menu.Item>
+              <Menu.Item
+                onClick={() => buscarSubCategoria(categoria.nombre, subCategoria.nombre)}
+                key={`/${categoria.nombre}/${subCategoria.nombre}`}
+              >
+                {subCategoria.nombre}
+              </Menu.Item>
             ))}
           </SubMenu>
         ))}
@@ -68,9 +69,13 @@ const HeaderMenu = ({
         </Menu.Item>
         )}
       {!isEmpty(user) && (
-        <Menu.Item key="/cuenta" style={{ float: 'right' }}>
-          <b>Cuenta</b>
-        </Menu.Item>
+        <SubMenu title="Cuenta" key="/cuenta" style={{ float: 'right' }}>
+          <MenuItem key="/cuenta/ordenes">
+            <Link to="/cuenta/ordenes">
+              Ordenes
+            </Link>
+          </MenuItem>
+        </SubMenu>
         )}
       {isEmpty(user) && (  
       <Menu.Item onClick={handleLoginClick} key="/login" style={{ float: 'right' }}>
@@ -83,13 +88,15 @@ const HeaderMenu = ({
         <Link to="/registrarse">Registrarse</Link>
       </Menu.Item>
       )}
-      <Menu.Item key="/carrito" style={{ float: 'right', marginTop: 2 }}>
-        <Link to="/carrito">
-          <Badge size="small" style={{ backgroundColor: '#52c41a' }} count={carrito.length}>
-            <ShoppingCartOutlined style={{ fontSize: '1.4em' }} />
-          </Badge>
-        </Link>
-      </Menu.Item>
+      {!user.empresa && (
+        <Menu.Item key="/carrito" style={{ float: 'right', marginTop: 2 }}>
+          <Link to="/carrito">
+            <Badge size="small" style={{ backgroundColor: '#52c41a' }} count={carrito.length}>
+              <ShoppingCartOutlined style={{ fontSize: '1.4em' }} />
+            </Badge>
+          </Link>
+        </Menu.Item>
+      )}
     </Menu>
     <SearchBar categorias={categorias} subCategorias={subCategorias} />
     </div>

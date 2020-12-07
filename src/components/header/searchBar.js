@@ -17,7 +17,7 @@ const SearchBar = ({ categorias, subCategorias, filterActual }) => {
       value: categoria.nombre,
       label: categoria.nombre,
       children:
-        subCategorias && subCategorias.filter((subCategoria) => subCategoria.idCategoria === categoria.id)
+        subCategorias && subCategorias.filter((subCategoria) => subCategoria.idCategoria.id === categoria.id)
         .map((subCategoria) => ({
         value: subCategoria.nombre,
         label: subCategoria.nombre

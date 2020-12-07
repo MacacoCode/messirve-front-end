@@ -12,19 +12,44 @@ import TagMedidas from '../TagMedidas';
 
 const Carrito = ({
   carrito, paraDespues, setCarritoItems, setParaDespuesItems,
-  user, setdetalleCarrito, detalleCarrito, setUser,
+  user, setDetalleCarrito, detalleCarrito, setUser,
 }) => {
   const [localCarrito, setLocalCarrito] = useState(carrito || []);
   const [precios, setPrecios] = useState([]);
   // const [subTotal, setSubTotal] = useState(detalleCarrito.subTotal || 0);
   const history = useHistory();
 
+  const deleteFromDB = (item) => {
+    const carritoBD = user.user.orden_set.find((o) => o.estado === 'Carrito')
+    fetch(`http://localhost:8000/api/productoorden?idOrden=${carritoBD.id}&idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const [found] = data;
+        if (found.id) {
+          fetch(`http://localhost:8000/api/productoorden/${found.id}`, {
+            method: 'DELETE', 
+            headers: { 'Content-type': 'application/json' },
+          }).then((res) => res.json())
+          return true;
+        } 
+        return false;
+      })
+  };
+
   const deleteFromCarrito = (item) => {
-    const updatedLocalCarrito = localCarrito.filter((i) => !isEqual(i, item));
-    localStorage.setItem('messirve-shop-carrito', JSON.stringify(updatedLocalCarrito));
-    setLocalCarrito(updatedLocalCarrito);
-    setCarritoItems(updatedLocalCarrito);
-    message.success("Producto Eliminado")
+    let deleted = true;
+    if (user.token) {
+      deleted = deleteFromDB(item);
+    }
+    if (deleted) {
+      const updatedLocalCarrito = localCarrito.filter((i) => !isEqual(i, item));
+      localStorage.setItem('messirve-shop-carrito', JSON.stringify(updatedLocalCarrito));
+      setLocalCarrito(updatedLocalCarrito);
+      setCarritoItems(updatedLocalCarrito);
+      message.success("Producto Eliminado")
+    } else {
+      message.error("Hubor un error elimando producto del carrito");
+    }
   };
   const moveToParaDespues = (item) => {
     const foundInParaDespues = paraDespues.find((i) => isEqual(i, item));
@@ -60,7 +85,7 @@ const Carrito = ({
     }
     const impuesto = sum*0.15
     const total = sum*1.15
-    setdetalleCarrito({...detalleCarrito, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
+    setDetalleCarrito({...detalleCarrito, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
     localStorage.setItem('messirve-shop-detalleCarrito',
       JSON.stringify({...detalleCarrito, subTotal: parseFloat(sum.toFixed(2)), impuesto: parseFloat(impuesto.toFixed(2)), total: parseFloat(total.toFixed(2))})
     )

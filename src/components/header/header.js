@@ -70,11 +70,11 @@ const Header = withRouter(({
       if (!isEmpty(foundOrden)) {
         Promise.all(
           carrito.map((item) => {
-            fetch(`http://localhost:8000/api/productoorden?idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
+            fetch(`http://localhost:8000/api/productoorden?idOrden=${foundOrden.id}&idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
               .then((res) => res.json())
               .then((data1) => {
                 const [found] = data1;
-                const productoOrdenFound = item.producto_orden_set.find((i) => found.idProducto === i.idProducto)
+                const productoOrdenFound = item.producto_orden_set.find((i) => found.idProducto === i.idProducto && found.idEmpresa === i.idEmpresa)
                 if (productoOrdenFound) {
                   fetch(`http://localhost:8000/api/productoorden/${productoOrdenFound.id}`, {
                     method: 'PATCH',

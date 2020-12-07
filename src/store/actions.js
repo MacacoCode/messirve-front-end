@@ -8,7 +8,7 @@ const actions = {
   setParaDespuesItems: (_, newItem) => ({ paraDespues: newItem }),
   setFilterActual: (_, filter) => ({ filterActual: filter }),
   setUser: (_, userData) => ({ user: userData }),
-  setdetalleCarrito: (_, newdetalleCarrito) => ({ detalleCarrito: newdetalleCarrito }),
+  setDetalleCarrito: (_, newdetalleCarrito) => ({ detalleCarrito: newdetalleCarrito }),
   setOrdenDireccion: (_, newOrdenDireccion) => ({ ordenDireccion: newOrdenDireccion }),
 };
 
