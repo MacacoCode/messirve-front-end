@@ -138,6 +138,7 @@ const Carrito = ({
   return (
     <>
       <Card title="Carrito" style={{ margin: 20 }}>
+        {isEmpty(localCarrito) && <h2 style={{ textAlign: 'center' }}>Carrito Vacío</h2>}
         {localCarrito?.map((item) => (
           <Card 
             // style={{ marginTop: 16 }}
@@ -216,34 +217,28 @@ const Carrito = ({
           </Card>
         ))}
         {!isEmpty(localCarrito) && (
-          <div style={{  float: 'right'}}>
-          <Row>
-            <Col> 
-              <Row style={{ textAlign:'center' }}>
-                <Col>Sub-Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.subTotal|| 0.00}</b></h2>
-                </Col>
-              +
-                <Col>IVA
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.impuesto || 0.00}</b></h2>
-                </Col>
-              =
-                <Col>Total
-                  <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.total|| 0.00}</b></h2>
-                </Col>
-              </Row>
-              <Col style={{ float: 'right' }}>
-                <Button
-                  style={{ backgroundColor: '#1a991c', borderColor: '#1a991c' }}
-                  type="primary"
-                  shape="round"
-                  onClick={handleMoveToCheckOut}
-                >
-                  Ordenar
-                </Button>
+          <div id="wrapper-pricing">
+            <Row style={{ textAlign:'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Col>Sub-Total
+                <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.subTotal|| 0.00}</b></h2>
               </Col>
-            </Col>
-          </Row>
+            +
+              <Col>IVA
+                <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.impuesto || 0.00}</b></h2>
+              </Col>
+            =
+              <Col>Total
+                <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.total|| 0.00}</b></h2>
+              </Col>
+            </Row>
+            <Button
+              style={{ backgroundColor: '#1a991c', borderColor: '#1a991c', float: 'right' }}
+              type="primary"
+              shape="round"
+              onClick={handleMoveToCheckOut}
+            >
+              Ordenar
+            </Button>
           </div>
         )}
       </Card>

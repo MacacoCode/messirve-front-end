@@ -16,9 +16,9 @@ const ResumenOrdenPage = ({user, carrito, ordenDireccion}) => {
     history.push('/carrito')
   }
   return (
-    <>
+    <div style={{ minHeight: 700 }}>
       <ResumenOrden user={user} carrito={carrito} />
-    </>
+    </div>
   );
 };
 

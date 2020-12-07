@@ -39,7 +39,9 @@ const Header = withRouter(({
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            ...detalleCarrito
+            impuesto: detalleCarrito.impuesto,
+            subtotal: detalleCarrito.subTotal,
+            total: detalleCarrito.total,
           })
         }).then((res) => res.json())
           .then((data) => {
@@ -68,69 +70,75 @@ const Header = withRouter(({
       if (!isEmpty(foundOrden)) {
         Promise.all(
           carrito.map((item) => {
-            console.log(item)
-            const productoOrdenFound = item.producto_orden_set.find((i) => user.id === i.idProducto)
-            if (productoOrdenFound) {
-              fetch(`http://localhost:8000/api/productoorden/${productoOrdenFound.id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  ...productoOrdenFound,
-                  subtotal: item.subTotal,
-                  iva: item.impuesto,
-                  total: item.total && parseFloat(item.total.toFixed(2))
-                })
-              }).then((res) => res.json())
-                .then((data) => {
-                  if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
-                  if (data.id) {
-                    const foundInCarrito = carrito.find((i) => i.id === data.idProducto)
-                    const index = findIndex(carrito, (i) => i.id === data.idProducto);
-                    foundInCarrito.producto_orden_set = [...foundInCarrito.producto_orden_set, data];
-                    if (!isEqual(carrito[index], foundInCarrito )) {
-                      carrito[index] = foundInCarrito;
-                      setCarritoItems([...carrito])
-                      localStorage.setItem('messirve-shop-carrito',
-                        JSON.stringify([...carrito]) 
-                      )
-                    }
-                  }
-                })
-            } else {
-              fetch(`http://localhost:8000/api/productoorden`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  ...item,
-                  idProducto:item.id,
-                  idOrden: foundOrden.id,
-                  subtotal: item.subTotal,
-                  iva: item.impuesto,
-                  total: item.total && parseFloat(item.total.toFixed(2))
-                })
-              }).then((res) => res.json())
-                .then((data) => {
-                  if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
-                  if (data.id) {
-                    const foundInCarrito = carrito.find((i) => i.id === data.idProducto)
-                    const index = findIndex(carrito, (i) => i.id === data.idProducto);
-                    foundInCarrito.producto_orden_set = [...foundInCarrito.producto_orden_set, data];
-                    if (!isEqual(carrito[index], foundInCarrito )) {
-                      carrito[index] = foundInCarrito;
-                      setCarritoItems([...carrito])
-                      localStorage.setItem('messirve-shop-carrito',
-                        JSON.stringify([...carrito]) 
-                      )
-                    }
-                  }
-                })
-            }
+            fetch(`http://localhost:8000/api/productoorden?idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
+              .then((res) => res.json())
+              .then((data1) => {
+                const [found] = data1;
+                const productoOrdenFound = item.producto_orden_set.find((i) => found.idProducto === i.idProducto)
+                if (productoOrdenFound) {
+                  fetch(`http://localhost:8000/api/productoorden/${productoOrdenFound.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      //...productoOrdenFound,
+                      ...item,
+                      subtotal: item.subTotal,
+                      iva: item.impuesto,
+                      total: item.total && parseFloat(item.total.toFixed(2))
+                    })
+                  }).then((res) => res.json())
+                    .then((data) => {
+                      if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
+                      if (data.id) {
+                        const foundInCarrito = carrito.find((i) => i.id === data.idProducto)
+                        const index = findIndex(carrito, (i) => i.id === data.idProducto);
+                        foundInCarrito.producto_orden_set = [...foundInCarrito.producto_orden_set, data];
+                        if (!isEqual(carrito[index], foundInCarrito )) {
+                          carrito[index] = foundInCarrito;
+                          setCarritoItems([...carrito])
+                          localStorage.setItem('messirve-shop-carrito',
+                            JSON.stringify([...carrito]) 
+                          )
+                        }
+                      }
+                    })
+                } else {
+                  fetch(`http://localhost:8000/api/productoorden`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      ...item,
+                      idProducto:item.id,
+                      idOrden: foundOrden.id,
+                      idEmpresa: item.empresa.idEmpresa.id,
+                      subtotal: item.subTotal,
+                      iva: item.impuesto,
+                      total: item.total && parseFloat(item.total.toFixed(2))
+                    })
+                  }).then((res) => res.json())
+                    .then((data) => {
+                      if (!data.id) message.error(`Hubo un error actualizando el producto ${item.nombre} en el carrito`)
+                      if (data.id) {
+                        const foundInCarrito = carrito.find((i) => i.id === data.idProducto)
+                        const index = findIndex(carrito, (i) => i.id === data.idProducto);
+                        foundInCarrito.producto_orden_set = [...foundInCarrito.producto_orden_set, data];
+                        if (!isEqual(carrito[index], foundInCarrito )) {
+                          carrito[index] = foundInCarrito;
+                          setCarritoItems([...carrito])
+                          localStorage.setItem('messirve-shop-carrito',
+                            JSON.stringify([...carrito]) 
+                          )
+                        }
+                      }
+                    })
+                }
+              })
             //fetch
           })
         )
       }
     }
-  }, [carrito]);
+  }, [carrito, detalleCarrito]);
   return (
     <div>
       <HeaderMenu location={location} />

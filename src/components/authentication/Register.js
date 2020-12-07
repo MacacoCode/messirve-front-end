@@ -3,7 +3,6 @@ import {
   Card, Form, Button, Input, message
 } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import Modal from 'antd/lib/modal/Modal';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
 import jwt from 'jwt-decode';
@@ -22,8 +21,15 @@ const Register = ({ visible, setVisible, setUser }) => {
         if (typeof data.email === "object") message.error(data.email)
         return data;
       })
-    console.log(nuevoUsuario)
     if (nuevoUsuario.id) {
+      await fetch('http://localhost:8000/api/orden', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          idUsuario: nuevoUsuario.id, estado: 'Carrito',
+          impuesto: 0, total: 0, subtotal: 0,
+        })
+      })
       fetch('http://localhost:8000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -31,13 +37,12 @@ const Register = ({ visible, setVisible, setUser }) => {
       }).then((res) => res.json())
         .then((data) => {
             if (data.token) {
-            setVisible(false)
             setTimeout(() => {
                 message.success("Ha ingresado a su cuenta correctamente!")
                 const decodedUser = jwt(data.token)
                 setUser({...decodedUser, token: data.token, user: data.user})
                 localStorage.setItem('messirve-shop-user', JSON.stringify(data))
-            }, 1000)
+              }, 1000)
             }
             if (data.detail) message.error(data.detail)
         })

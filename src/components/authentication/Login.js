@@ -9,10 +9,10 @@ import { connect } from 'unistore/react';
 import { actions } from '../../store';
 import jwt from 'jwt-decode';
 
-const Login = ({ visible, setVisible, setUser }) => {
+const Login = ({ visible, setVisible, setUser, setDetalleCarrito }) => {
 
-  const submit = (values) => {
-    fetch('http://localhost:8000/api/login', {
+  const submit = async (values) => {
+    await fetch('http://localhost:8000/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values)
@@ -26,6 +26,10 @@ const Login = ({ visible, setVisible, setUser }) => {
             setUser({...decodedUser, token: data.token, user: data.user})
             localStorage.setItem('messirve-shop-user', JSON.stringify(data))
           }, 1000)
+          const carritoBD = data.user.orden_set.find((o) => o.estado === 'Carrito')
+          fetch(`http://localhost:8000/api/orden/${carritoBD.id}`)
+            .then((res) => res.json())
+            .then((data) => setDetalleCarrito({impuesto:data.impuesto, subTotal: data.subtotal, total: data.total}))
         }
         if (data.detail) message.error(data.detail)
       })

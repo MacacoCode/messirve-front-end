@@ -45,15 +45,6 @@ const HeaderMenu = ({
         <Link to="/home">Home</Link>
       </Menu.Item>
       <SubMenu title="Categorias" style={{ float: 'left' }}>
-        {/*<SubMenu title="Vestimenta">
-          <Menu.Item key="setting:1">Calzado</Menu.Item>
-          <Menu.Item key="setting:2">Camisas</Menu.Item>
-          <Menu.Item key="setting:2">Accesorios</Menu.Item>
-        </SubMenu>
-        <SubMenu title="Suplementos">
-          <Menu.Item key="setting:3">Snacks</Menu.Item>
-          <Menu.Item key="setting:4">Proteina</Menu.Item>
-        </SubMenu>*/}
         {categorias && categorias.map((categoria) => (
           <SubMenu onTitleClick={() => buscarCategoria(categoria.nombre)} title={categoria.nombre}>
             {subCategorias && subCategorias.filter((subCategoria) => subCategoria.idCategoria === categoria.id)
@@ -69,11 +60,8 @@ const HeaderMenu = ({
         ))}
       </SubMenu>
       <Menu.Item key="/about" style={{ float: 'left' }}>
-        About Us
+        Nosotros
       </Menu.Item>
-      {/*<Menu.Item style={{ width:'50%', marginTop: 10 }}>
-        <SearchBar />
-      </Menu.Item>*/}
       {!isEmpty(user) && (
         <Menu.Item onClick={logout} key="/logout" style={{ float: 'right' }}>
           Cerrar Sesión

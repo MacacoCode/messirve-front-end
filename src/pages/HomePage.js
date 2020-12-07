@@ -6,11 +6,11 @@ import HomeBanner from '../components/home/HomeBanner';
 const HomePage = ({}) => {
 
   return (
-    <>
+    <div style={{ minHeight: 700 }}>
       <HomeBanner />
       <Tendencias />
       <NuevoEnTienda />
-    </>
+    </div>
   );
 };
 

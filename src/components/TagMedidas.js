@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Tag } from 'antd';
+import { isEmpty } from 'lodash';
 
 const { CheckableTag } = Tag;
 
@@ -24,16 +25,23 @@ const TagMedidas = ({ medidas, selectedEmpresa, setSelectedMedida }) => {
       setSelectedMedida(filteredMedidas[0])
     }
   }, [selectedEmpresa])
+
   return (
     <>
-        {thisMedidas?.map((me) => (
-        <CheckableTag
-            key={me.idtalla.id}
-            checked={medida.indexOf(me.idtalla.id) > -1}
+        {!isEmpty(thisMedidas) && thisMedidas?.map((me) => (
+          <>
+          {!isEmpty(me) ? (
+            <CheckableTag
+            key={me?.idtalla?.id}
+            checked={medida.indexOf(me?.idtalla?.id) > -1}
             onChange={checked => handleChange(me, checked)}
-        >
-            {me.idtalla.tamanio}
-        </CheckableTag>
+          >
+              {me.idtalla.tamanio}
+          </CheckableTag>
+          ) : (
+            null
+          )}
+          </>
         ))}
     </>
   );

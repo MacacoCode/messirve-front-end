@@ -41,6 +41,7 @@ const ParaDespues = ({ paraDespues, carrito, setParaDespuesItems, setCarritoItem
   return (
     <>
       <Card title="Para Despues" style={{ margin: 20 }}>
+        {isEmpty(localParaDespues) && <h2 style={{ textAlign: 'center' }}>Lista Vacía</h2>}
         {localParaDespues?.map((item) => (
           <Card 
             // style={{ marginTop: 16 }}

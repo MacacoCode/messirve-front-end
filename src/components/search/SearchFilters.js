@@ -5,7 +5,16 @@ import {
 import { connect } from 'unistore/react';
 import PriceRange from './PriceRange';
 
-const SearchFilters = ({ categorias, subCategorias, marcas }) => {
+const SearchFilters = ({ categorias, subCategorias, marcas, setFoundProductos }) => {
+  const filterBySubcategoria = (elo, props) => {
+    let subcat;
+    if (elo === "add") subcat = props.item.props.children[1];
+    if (elo === "rest") subcat = "";
+    fetch(`http://localhost:8000/api/productos?subcategoria=${subcat}`)
+      .then((res) => res.json())
+      .then((data) => setFoundProductos(data));
+  };
+
 
   return(
     <div id="search-filters" style={{ position: 'fixed' }}>
@@ -23,7 +32,7 @@ const SearchFilters = ({ categorias, subCategorias, marcas }) => {
             ))}
         </Menu.ItemGroup>
     </Menu>
-    <Menu multiple mode="inline">
+    <Menu multiple onSelect={(props) => filterBySubcategoria ("add", props)} onDeselect={(props) => filterBySubcategoria("rest", props)} mode="inline">
         <Menu.ItemGroup key="subcategoria-menu" title="SubCategorias">
             {subCategorias && subCategorias.map((subCategoria) => (
                 <Menu.Item key={subCategoria.id}>{subCategoria.nombre}</Menu.Item>
@@ -37,13 +46,13 @@ const SearchFilters = ({ categorias, subCategorias, marcas }) => {
             ))}
         </Menu.ItemGroup>
     </Menu>
-    <Menu multiple mode="inline" selectable={false}>
-       <Menu.ItemGroup key="rating" title="Rating">
+    {/*<Menu mode="inline" selectable={false}>
+       <Menu.ItemGroup key="rating" title="Calificación">
             <Menu.Item key="rating-component">
                 <Rate allowHalf defaultValue={0} />
             </Menu.Item>
         </Menu.ItemGroup>
-    </Menu>
+    </Menu>*/}
     </div>
   );
 };

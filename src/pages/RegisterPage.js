@@ -8,9 +8,9 @@ const RegisterPage = ({user}) => {
 
   if (user.token) history.push('/')
   return (
-    <>
+    <div style={{ minHeight: 700 }}>
       <Register />
-    </>
+    </div>
   );
 };
 

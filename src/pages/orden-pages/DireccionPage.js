@@ -17,9 +17,9 @@ const DireccionPage = ({setUser, user, carrito}) => {
     history.push('/carrito')
   }
   return (
-    <>
+    <div style={{ minHeight: 700 }}>
       <DireccionOrden user={user} />
-    </>
+    </div>
   );
 };
 

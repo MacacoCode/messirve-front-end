@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import SearchFilters from '../components/search/SearchFilters';
 import { useParams } from 'react-router-dom';
 import Post from '../components/post';
@@ -16,7 +16,7 @@ const SearchPage= () => {
           .then((data) => setFoundProductos(data));
       }
       else if (params.categoria && params.subcategoria) {
-        fetch(`http://localhost:8000/api/productos?${params.subcategoria.replace('=','s=')}&${params.producto?.replace('producto', 'search')}`)
+        fetch(`http://localhost:8000/api/productos?${params.subcategoria}&${params.producto?.replace('producto', 'search')}`)
           .then((res) => res.json())
           .then((data) => setFoundProductos(data));
       }
@@ -24,14 +24,14 @@ const SearchPage= () => {
   }, [params]);
 
   return(
-    <>          
-    <Col span={3}>
-      <SearchFilters />
-    </Col>
+    <div style={{ minHeight: 700 }}>          
+      <Col span={3}>
+        <SearchFilters setFoundProductos={setFoundProductos} />
+      </Col>
       <Row>
         <Col offset={3}>
           <Row>
-            {foundProductos && foundProductos.map((producto) => (
+            {foundProductos ? foundProductos.map((producto) => (
               <Col span={7}>
                 <Post
                   noHeight
@@ -44,11 +44,11 @@ const SearchPage= () => {
                   medidas={producto.tallaproducto_set}
                 />
               </Col>
-            ))}
+            )) : <Spin />}
           </Row>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 
