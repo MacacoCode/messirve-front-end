@@ -48,7 +48,7 @@ const UsuarioOrdenes = ({ user, setAltDetalle }) => {
             key: 'accion',
             render: (text, record) => (
                 <Space size="middle">
-                  <Link onClick={() => handleVerProductos(record)} to="/orden/resume-orden">Ver Productos</Link>
+                  <Link onClick={() => handleVerProductos(record)} to="/orden/resumen-orden">Ver Productos</Link>
                 </Space>
               )
         }

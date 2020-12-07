@@ -23,15 +23,13 @@ const ResumenOrden = ({
   }; */
 
   useEffect(() => {
-    console.log("hell")
     // calculateSubTotal();
     if (!isEmpty(altDetalle)) {
-      console.log("hello")
       fetch(`http://localhost:8000/api/productoorden?idOrden=${altDetalle.id}`)
         .then((res) => res.json())
         .then((data) => setResumen(data));
     }
-  }, [altDetalle])
+  }, [])
   return (
     <>
     <Card>
@@ -70,7 +68,7 @@ const ResumenOrden = ({
                     Cantidad - {item.cantidad}
                 </Row>
                 <Row>
-                    Vendido por - {item.empresa.idEmpresa.nombre}
+                    Vendido por - {item.empresa?.idEmpresa.nombre}
                 </Row>
               </Col>
               </Card>
@@ -125,4 +123,4 @@ const ResumenOrden = ({
   );
 };
 
-export default connect(['ordenDireccion', 'detalleCarrito', 'altDetalle'])(ResumenOrden);
+export default connect(['ordenDireccion', 'detalleCarrito'])(ResumenOrden);
