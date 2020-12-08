@@ -29,7 +29,10 @@ const DireccionOrden = ({user, setUser, setOrdenDireccion}) => {
       ...values,
       direccion: parsedDireccion,
     };
-    await setOrdenDireccion({...user, ...payload})
+    await setOrdenDireccion({
+      ...user,
+      ...payload,
+    })
     if (values.default === true) {
       await fetch(`http://localhost:8000/api/usuario/${user.id}`, {
         method: 'PATCH',

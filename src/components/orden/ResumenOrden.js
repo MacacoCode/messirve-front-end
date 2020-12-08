@@ -24,6 +24,7 @@ const ResumenOrden = ({
       setSubTotal(sum);
     }
   }; */
+  console.log("carrito", carrito)
 
   useEffect(() => {
     // calculateSubTotal();
@@ -38,7 +39,8 @@ const ResumenOrden = ({
       fetch(`http://localhost:8000/api/orden/${params.idOrden}`)
         .then((res) => res.json())
         .then((data) => {
-          fetch(`http://localhost:8000/api/productoorden?idOrden=${params.idOrden}`)
+          if (!data.detail) {
+            fetch(`http://localhost:8000/api/productoorden?idOrden=${params.idOrden}`)
             .then((res) => res.json())
             .then((data1) => {
               if (data1.estado !== 'Carrito') {
@@ -50,12 +52,14 @@ const ResumenOrden = ({
                 setDirec(data.direccion)
               }
             });
+          }
         });
     }
   }, [])
 
   useEffect(() => {
     if (!isEmpty(resumen) && getProductos === true) {
+      let changedResumen = [];
       Promise.all(
         resumen.map((item) => {
           fetch(`http://localhost:8000/api/empresaproducto?idEmpresa=${item.idEmpresa}&idProducto=${item.idProducto}`)
@@ -67,9 +71,10 @@ const ResumenOrden = ({
                   fetch(`http://localhost:8000/api/productos/${item.idProducto}`)
                     .then((res) => res.json())
                     .then((data3) => {
-                      const filteredResumen = resumen.filter((it) => it.id !== item.id);
+                      // const filteredResumen = resumen.filter((it) => it.id !== item.id);
                       const [empresa] = data;
-                      setResumen([...filteredResumen, {...item, nombre: data3.nombre, descripcion: data3.descripcion, empresa: {...empresa, idEmpresa: data2} }]);
+                      changedResumen = [...changedResumen, {...item, nombre: data3.nombre, descripcion: data3.descripcion, empresa: {...empresa, idEmpresa: data2} }]
+                      setResumen(changedResumen);
                     })
                 })
             })
@@ -167,9 +172,11 @@ const ResumenOrden = ({
                   <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalle.total || 0.00}</b></h2>
                 </Col>
               </Row>
-              <div style={{ float: 'right' }}>
-                <ConfirmarOrden />
-              </div>
+              {!params.idOrden && ordenDireccion && (
+                <div style={{ float: 'right' }}>
+                  <ConfirmarOrden orden={detalle} productos={resumen} direccion={direc} />
+                </div>
+              )}
             </Card> 
           </Col>
         </Row>
