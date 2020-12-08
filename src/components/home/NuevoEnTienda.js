@@ -67,7 +67,7 @@ const NuevoEnTienda = () => {
         style={{ margin: 15 }}
         onBreakpointChange={breakPointChange}
         >
-        <div key='1'> <Post addDisabled title="Hoodie" image={post1} /> </div>
+        <div key='1'> <Post addDisabled title="Hoodie" image={post1}  /> </div>
         <div key='2'> <Post addDisabled title="Mancuerdas" image={post2} /> </div>
         <div key='3'> <Post addDisabled title="Snack" image={post3} /> </div>
         <div style={currentCols < 6 ? {display:'none'} : null} key='4'> <Post addDisabled title="Proteina" image={post4} /> </div>

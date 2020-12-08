@@ -256,20 +256,37 @@ const Carrito = ({
           </Card>
         ))}
         {!isEmpty(localCarrito) && (
-          <div id="wrapper-pricing">
-            <Row style={{ textAlign:'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Col>Sub-Total
-                <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.subTotal|| 0.00}</b></h2>
-              </Col>
-            +
-              <Col>IVA
-                <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.impuesto || 0.00}</b></h2>
-              </Col>
-            =
-              <Col>Total
-                <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalleCarrito.total|| 0.00}</b></h2>
-              </Col>
-            </Row>
+          <div id="">
+            
+            <div style={{ paddingLeft:'90%'}}>
+            
+                <div style={{display:'flex'}}>
+                  <Col>
+                  <h2>Subtotal: </h2>
+                  </Col>
+                  <Col>
+                    <h2 ><b>CS${detalleCarrito.subTotal|| 0.00}</b></h2>
+                  </Col>
+                </div>
+              
+                <div style={{display:'flex'}}>
+                  <div >
+                    <h2 >IVA: </h2>
+                  </div>
+                  <div>
+                    <h2  ><b>CS${detalleCarrito.impuesto || 0.00}</b></h2>
+                  </div>
+                </div>
+                
+                <div style={{display:'flex'}}>
+                  <Col>
+                    <h2>Total:  </h2>
+                  </Col>
+                  <Col>
+                    <h2 ><b>CS${detalleCarrito.total|| 0.00}</b></h2>
+                  </Col>
+                </div>
+            </div>
             <Button
               style={{ backgroundColor: '#1a991c', borderColor: '#1a991c', float: 'right' }}
               type="primary"

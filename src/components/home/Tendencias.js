@@ -53,7 +53,7 @@ const Tendencias = () => {
         style={{ margin: 15 }}
         onBreakpointChange={breakPointChange}
         >
-        <div key='8'> <PostTendencia description="Madre mia el BIcho" title="Futbol" image={post8} /> </div>
+        <div key='8'> <PostTendencia description="Madre mia el BIcho" title="Futbol" image={post8}  /> </div>
 
         <div style={currentCols < 6 ? {display:'none'} : null} key='9'> <PostTendencia description="El arte de mover tu cuerpo" title="Calistenia" image={post9} /> </div>
 
