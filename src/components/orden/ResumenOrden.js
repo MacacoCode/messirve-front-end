@@ -4,6 +4,7 @@ import { connect } from 'unistore/react';
 import TagMedidas from '../TagMedidas';
 import { isEmpty } from 'lodash';
 import { useParams } from 'react-router-dom';
+import ConfirmarOrden from './ConfirmarOrden';
 
 const ResumenOrden = ({
   ordenDireccion, user, carrito, detalleCarrito,
@@ -151,7 +152,7 @@ const ResumenOrden = ({
             </Row>
         ))}
         <Row>
-            <Col span={24}>
+          <Col span={24}>
             <Card>
               <Row style={{ textAlign:'center' }}>
                 <Col>Sub-Total
@@ -166,9 +167,12 @@ const ResumenOrden = ({
                   <h2 style={{ borderTop: '1px solid grey' }}><b>CS${detalle.total || 0.00}</b></h2>
                 </Col>
               </Row>
+              <div style={{ float: 'right' }}>
+                <ConfirmarOrden />
+              </div>
             </Card> 
-            </Col>
-          </Row>
+          </Col>
+        </Row>
     </Card>
     </>
   );
