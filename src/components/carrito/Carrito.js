@@ -5,7 +5,7 @@ import {
 } from 'antd';
 import CantidadSelector from './CantidadSelector';
 import { Link, useHistory } from 'react-router-dom';
-import { isEqual, isEmpty, findIndex, cloneDeep } from 'lodash';
+import { isEqual, isEmpty, findIndex, cloneDeep, omit } from 'lodash';
 import { connect } from 'unistore/react';
 import { actions } from '../../store';
 import TagMedidas from '../TagMedidas';
@@ -19,19 +19,24 @@ const Carrito = ({
   // const [subTotal, setSubTotal] = useState(detalleCarrito.subTotal || 0);
   const history = useHistory();
 
-  const deleteFromDB = (item) => {
-    const carritoBD = user.user.orden_set.find((o) => o.estado === 'Carrito')
+  const deleteFromDB = async (item) => {
+    // const carritoBD = user.user.orden_set.find((o) => o.estado === 'Carrito')
     /*fetch(`http://localhost:8000/api/productoorden?idOrden=${carritoBD.id}&idProducto=${item.id}&idEmpresa=${item.empresa.idEmpresa.id}`)
       .then((res) => res.json())
       .then((data) => {
         const [found] = data;*/
         if (/*found.id*/ item.idProductoOrden) {
-          fetch(`http://localhost:8000/api/productoorden/${item.idProductoOrden}`, {
+          let ok = false;
+          await fetch(`http://localhost:8000/api/productoorden/${item.idProductoOrden}`, {
             method: 'DELETE', 
             headers: { 'Content-type': 'application/json' },
-          }).then((res) => res.json())
-          return true;
-        } 
+          }).then((res) => {
+            if (res.status === 404 || res.status === 204) {
+              ok = true;
+            }
+          })
+          return ok;
+        }
         return false;
       // })
   };
@@ -62,8 +67,11 @@ const Carrito = ({
         setLocalCarrito(filteredLocalCarrito);
         localStorage.setItem('messirve-shop-carrito', JSON.stringify(filteredLocalCarrito));
         setCarritoItems(filteredLocalCarrito);
-        localStorage.setItem('messirve-shop-para-despues', JSON.stringify([...paraDespues, item]));
-        setParaDespuesItems([...paraDespues, item]);
+
+        const alteredItem = omit(item, 'idProductoOrden');
+
+        localStorage.setItem('messirve-shop-para-despues', JSON.stringify([...paraDespues, alteredItem]));
+        setParaDespuesItems([...paraDespues, alteredItem]);
         message.success("Guardado Para Despues")
       } else {
         message.error("Mismo producto ya esta en Para Despues")
@@ -103,7 +111,6 @@ const Carrito = ({
     for (let i=0; i<carrito.length; i+=1) {
       const found = precios.find((p) => p.idProducto === carrito[i].id && p.idEmpresa === carrito[i].empresa?.idEmpresa.id);
       if (found && itemId === carrito[i].id && empresaId === carrito[i].empresa?.idEmpresa.id) {
-        console.log(found)
         const copy = cloneDeep(found);
         copy.precio = carrito[i].empresa.precioBase*value;
         const index = findIndex(precios, (o) => o.idProducto === copy.idProducto && o.idEmpresa === copy.idEmpresa);

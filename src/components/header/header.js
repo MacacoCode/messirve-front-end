@@ -75,7 +75,6 @@ const Header = withRouter(({
               .then((data1) => {
                 const [found] = data1; */
                 // const productoOrdenFound = item.producto_orden_set.find((i) => found.idProducto === i.idProducto && found.idEmpresa === i.idEmpresa)
-                console.log(item)
                 if (/*productoOrdenFound ||*/ item.idProductoOrden) {
                   fetch(`http://localhost:8000/api/productoorden/${item.idProductoOrden}`, {
                     method: 'PATCH',
@@ -126,7 +125,6 @@ const Header = withRouter(({
                         if (isEqual(carrito[index], item )) {
                           carrito[index] = item;
                           carrito[index].idProductoOrden = data.id
-                          console.log(carrito[index])
                           setCarritoItems([...carrito])
                           localStorage.setItem('messirve-shop-carrito',
                             JSON.stringify([...carrito]) 
