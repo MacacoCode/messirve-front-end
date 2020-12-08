@@ -39,7 +39,7 @@ ReactDOM.render(
             <Route exact path="/carrito" component={CarritoPage} />
             <Route exact path="/registrarse" component={RegisterPage} />
             <Route exact path="/orden/direccion" component={DireccionPage} />
-            <Route exact path="/orden/resumen-orden/:idOrden?" component={ResumenOrdenPage} />
+            <Route exact path="/orden/resumen-orden/:idUser?/:idOrden?" component={ResumenOrdenPage} />
             <Route exact path="/cuenta/ordenes" component={OrdenesPage}/>
           </Switch>
           <Footer />

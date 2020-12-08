@@ -48,14 +48,14 @@ const UsuarioOrdenes = ({ user, setAltDetalle }) => {
             key: 'accion',
             render: (text, record) => (
                 <Space size="middle">
-                  <Link onClick={() => handleVerProductos(record)} to={`/orden/resumen-orden/${record.id}`}>Ver Productos</Link>
+                  <Link onClick={() => handleVerProductos(record)} to={`/orden/resumen-orden/${user.id}/${record.id}`}>Ver Productos</Link>
                 </Space>
               )
         }
     ]
   
     useEffect(() => {
-      fetch(`http://localhost:8000/api/orden?idUsuario=${user.id}`)
+      fetch(`http://localhost:8000/api/orden?idUsuario=${user.id}&exclude_estado=Carrito`)
         .then((res) => res.json())
         .then((data) => {
           setOrders(data)

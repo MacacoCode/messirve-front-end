@@ -13,6 +13,7 @@ const ResumenOrden = ({
   const [resumen, setResumen] = useState(isEmpty(altDetalle) ? carrito : []);
   const [direc, setDirec] = useState(isEmpty(altDetalle) ? ordenDireccion : altDetalle.direccion)
   const [detalle, setDetalle] = useState(isEmpty(altDetalle) ? detalleCarrito : altDetalle);
+  const [getProductos, setGetProductos] = useState(false);
   // const [subTotal, setSubTotal] = useState(0);
 
  /* const calculateSubTotal = () => {
@@ -28,19 +29,54 @@ const ResumenOrden = ({
     if (!isEmpty(altDetalle)) {
       fetch(`http://localhost:8000/api/productoorden?idOrden=${altDetalle.id}`)
         .then((res) => res.json())
-        .then((data) => setResumen(data));
+        .then((data) => {
+          setResumen(data)
+          setGetProductos(true)
+        });
     } else if (params.idOrden) {
-      fetch(`http://localhost:8000/api/productoorden?idOrden=${params.idOrden}`)
-        .then((res) => res.json())
-        .then((data) => setResumen(data));
-        fetch(`http://localhost:8000/api/orden/${params.idOrden}`)
+      fetch(`http://localhost:8000/api/orden/${params.idOrden}`)
         .then((res) => res.json())
         .then((data) => {
-          setDetalle(data)
-          setDirec(data.direccion)
+          fetch(`http://localhost:8000/api/productoorden?idOrden=${params.idOrden}`)
+            .then((res) => res.json())
+            .then((data1) => {
+              if (data1.estado !== 'Carrito') {
+                // setter de la segunda request
+                setResumen(data1)
+                setGetProductos(true)
+                // setter the la primera request
+                setDetalle(data)
+                setDirec(data.direccion)
+              }
+            });
         });
     }
   }, [])
+
+  useEffect(() => {
+    if (!isEmpty(resumen) && getProductos === true) {
+      Promise.all(
+        resumen.map((item) => {
+          fetch(`http://localhost:8000/api/empresaproducto?idEmpresa=${item.idEmpresa}&idProducto=${item.idProducto}`)
+            .then((res) => res.json())
+            .then((data) => {
+              fetch(`http://localhost:8000/api/empresa/${item.idEmpresa}`)
+                .then((res) => res.json())
+                .then((data2) => {
+                  fetch(`http://localhost:8000/api/productos/${item.idProducto}`)
+                    .then((res) => res.json())
+                    .then((data3) => {
+                      const filteredResumen = resumen.filter((it) => it.id !== item.id);
+                      const [empresa] = data;
+                      setResumen([...filteredResumen, {...item, nombre: data3.nombre, descripcion: data3.descripcion, empresa: {...empresa, idEmpresa: data2} }]);
+                    })
+                })
+            })
+        })
+      )
+      setGetProductos(false);
+    }
+  }, [getProductos])
   return (
     <>
     <Card>
@@ -98,7 +134,7 @@ const ResumenOrden = ({
                     <TagMedidas medidas={[item.medida]} />
                 </Row>
                 <Row style={{ marginTop: 5 }}>
-                    <h4><b>{item.empresa?.precioBase && `C$${item.empresa.precioBase*item.cantidad}`}</b></h4>
+                  <h4><b>{item.empresa?.precioBase && `C$${item.empresa.precioBase*item.cantidad}`}</b></h4>
                 </Row>
                 <Row>
                     Individual - {item.empresa?.precioBase && `C$${item.empresa.precioBase}`}

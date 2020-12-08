@@ -16,6 +16,10 @@ const ResumenOrdenPage = ({user, carrito, ordenDireccion, altDetalle}) => {
     message.warning('No se han encontrado productos en su carrito')
     history.push('/carrito')
   }
+  if (params.idOrden && (user.id !== parseInt(params.idUser,10))) {
+    message.warning('No se encontro la orden que esta buscando')
+    history.push("/")
+  }
   return (
     <div style={{ minHeight: 700 }}>
       <ResumenOrden user={user} carrito={carrito} altDetalle={altDetalle} />
