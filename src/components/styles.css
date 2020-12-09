@@ -117,6 +117,39 @@ a {
     box-shadow: 0 0 02px rgba(24,144,255,0.2);
 }
 
+.ant-spin-dot-item {
+    background-color: #fcb131;
+}
+
+.ant-table-filter-trigger.active {
+    color: #f48221;
+}
+
+.ant-btn-link {
+    color: #fcb131;
+    background: transparent;
+    border-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.ant-btn-link:hover, .ant-btn-link:focus {
+    color: #fcb131;
+    background: transparent;
+    border-color: #fcb131;
+}
+
+.ant-btn-link:active {
+    color: #fcb131;
+    background: transparent;
+    border-color: #fcb131;
+}
+
+.ant-dropdown-menu-item-selected, .ant-dropdown-menu-submenu-title-selected, .ant-dropdown-menu-item-selected > a, .ant-dropdown-menu-submenu-title-selected > a {
+    color: #fcb131;;
+    background-color: #e6f7ff;
+}
+
 /*CUSTOM STYLES*/
 .greyish-background {
     background-color: #e6e8ef;

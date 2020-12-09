@@ -24,7 +24,6 @@ const ResumenOrden = ({
       setSubTotal(sum);
     }
   }; */
-  console.log("carrito", carrito)
 
   useEffect(() => {
     // calculateSubTotal();
@@ -102,18 +101,18 @@ const ResumenOrden = ({
                   Nombre - {`${direc?.first_name} ${direc?.last_name}`}
               </Row>
               <Row>
-                  Direccion - {direc?.direccion?.direccion}
+                  Direccion - {direc?.direccion?.direccion || direc.direccion}
               </Row>
               <Row>
-                  Ciudad - {direc?.direccion?.ciudad}
+                  Ciudad - {direc?.direccion?.ciudad || direc.ciudad}
               </Row>
               {direc?.direccion?.region && (
                 <Row>
-                  Region - {direc?.direccion?.region}
+                  Region - {direc?.direccion?.region || direc.region}
                 </Row>
               )}
               <Row>
-                  Postal - {direc?.direccion?.postal}
+                  Postal - {direc?.direccion?.postal || direc.postal}
               </Row>
               <Row>
                   Telefono - {direc?.telefono}

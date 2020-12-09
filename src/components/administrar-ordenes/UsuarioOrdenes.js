@@ -1,4 +1,4 @@
-import { Space, Table } from 'antd';
+import { message, Space, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'unistore/react';
@@ -32,20 +32,24 @@ const UsuarioOrdenes = ({ user, setAltDetalle }) => {
             title: 'Impuesto',
             dataIndex: 'impuesto',
             key: 'impuesto',
+            render: (dato) => (`C$${dato}`)
         },
         {
             title: 'Sub-Total',
             dataIndex: 'subtotal',
             key: 'subtotal',
+            render: (dato) => (`C$${dato}`)
         },
         {
             title: 'Total',
             dataIndex: 'total',
             key: 'total',
+            render: (dato) => (`C$${dato}`)
         },
         {
-            title: 'Acción',
-            key: 'accion',
+            title: 'Acciones',
+            dataIndex: 'acciones',
+            key: 'acciones',
             render: (text, record) => (
                 <Space size="middle">
                   <Link onClick={() => handleVerProductos(record)} to={`/orden/resumen-orden/${user.id}/${record.id}`}>Ver Productos</Link>
@@ -61,6 +65,11 @@ const UsuarioOrdenes = ({ user, setAltDetalle }) => {
           setOrders(data)
         })
     }, []);
+
+    /* useEffect(() => {
+      const closedOrders = orders.filter((order) => order.estado === 'Orden Cerrada' && order.no_Orden === );
+      if (closedOrders)
+    }, [orders]) */
   
     return (
       <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '80%' }}>

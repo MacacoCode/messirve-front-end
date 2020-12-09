@@ -113,6 +113,7 @@ const Header = withRouter(({
                       idEmpresa: item.empresa.idEmpresa.id,
                       subtotal: item.subTotal,
                       iva: item.impuesto,
+                      tamanio: item.medida,
                       total: item.total && parseFloat(item.total.toFixed(2))
                     })
                   }).then((res) => res.json())
