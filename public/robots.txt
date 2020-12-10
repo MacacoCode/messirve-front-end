@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /home
 Allow: /search/producto=
+Allow: /registrarse
 Disallow: /cuenta/ordenes
+Disallow: /cuenta/productos
