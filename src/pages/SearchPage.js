@@ -25,11 +25,11 @@ const SearchPage= () => {
 
   return(
     <div style={{ minHeight: 700 }}>          
-      <Col span={3}>
+      <Col span={4}>
         <SearchFilters setFoundProductos={setFoundProductos} />
       </Col>
       <Row>
-        <Col offset={3}>
+        <Col offset={4}>
           <Row>
             {foundProductos ? foundProductos.map((producto) => (
               <Col span={7}>

@@ -124,7 +124,6 @@ const Post = ({
           <Row style={{ marginBottom: 10 }}>
             <Col>
               <CantidadSelector setCantidadProductoCarrito={setSelectedCantidad} />
-              {console.log(title, producto)}
               {selectedMedida?.cantidad ?  (`/${selectedMedida.cantidad}`) : (`/${producto.empresaproducto_set.find((e) => e.idEmpresa.id === selectedEmpresa.idEmpresa.id)?.cantidad}`)}
             </Col>
           </Row>

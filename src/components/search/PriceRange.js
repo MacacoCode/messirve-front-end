@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { InputNumber, Row, Checkbox } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { InputNumber, Row, Button } from 'antd';
 
-const PriceRange = ({ checkable }) => {
+const PriceRange = ({ checkable, precioRango, setPrecioRango, filterByRango }) => {
   const [first, setFirst] = useState(0);
   const [second, setSecond] = useState();
 
@@ -14,7 +14,10 @@ const PriceRange = ({ checkable }) => {
                 size="small"
                 max={9999}
                 min={0}
-                onChange={(value) => setFirst(value)}
+                onChange={(value) => {
+                  setFirst(value);
+                  // setPrecioRango([ value, precioRango[1] ])
+                }}
             />
             <p
               style={{ fontWeight: 'bold', alignSelf: 'center', marginRight: 4, marginLeft: 4 }}
@@ -28,9 +31,12 @@ const PriceRange = ({ checkable }) => {
                 size="small"
                 max={9999}
                 min={first}
-                onChange={(value) => setSecond(value)}
+                onChange={(value) => {
+                  setSecond(value);
+                  // setPrecioRango([ precioRango[0], value ])
+                }}
             />
-            {checkable && <Checkbox style={{ alignSelf: 'center', marginRight: 4, marginLeft: 4 }} />}
+            {checkable && <Button onClick={() => filterByRango(first, second)} style={{ alignSelf: 'center', marginRight: 4, marginLeft: 4 }}>Ok</Button>}
     </Row>
   )
 };
