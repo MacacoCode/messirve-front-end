@@ -1,12 +1,13 @@
 import React from 'react';
+import { connect } from 'unistore/react';
 import AdmProductos from '../../components/administrar-productos/AdmProductos';
 
-const AdmProductosPage = () => {
+const AdmProductosPage = ({user}) => {
   return (
     <>
-        <AdmProductos />
+        <AdmProductos user={user} />
     </>
   );
 };
 
-export default AdmProductosPage;
+export default connect('user')(AdmProductosPage);

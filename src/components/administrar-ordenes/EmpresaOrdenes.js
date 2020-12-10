@@ -56,6 +56,8 @@ const EmpresaOrdenes = ({user}) => {
           message.success(`${record.producto.nombre} en Orden ${record.no_Orden} fue entregado!!!`)
         }
       })
+    fetch(`http://localhost:8000/api/empresaproducto?idProducto=${record.producto.id}`).
+      then((res) => res.json());
   };
   const handleTableChange = (pagination, filters, sorter) => {
     setLoading(false)
@@ -243,37 +245,41 @@ const EmpresaOrdenes = ({user}) => {
   ]
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/productoorden?idEmpresa=${user.empresa}`)
-      .then((res) => res.json())
-      .then((data) => {
-        let arr = [];
-        Promise.all(
-          data.map((productoOrden) => {
-            fetch(`http://localhost:8000/api/productos/${productoOrden.idProducto}`)
-              .then((res) => res.json())
-              .then((data1) => {
-                fetch(`http://localhost:8000/api/orden/${productoOrden.idOrden}`)
-                  .then((res) => res.json())
-                  .then((data2) => {
-                    const index = findIndex(data, (dato) => dato.idProducto === data1.id)
-                    data[index].producto = data1;
-                    data[index].no_Orden = data2.no_Orden;
-                    data[index].direccion = data2.direccion;
-                    data[index].fecha_ingreso = data2.fecha_ingreso;
-                    arr = [...arr, data[index]]
-                    setOrders(arr)
-                    setLoading(false)
-                  })
-              })
-          })
-        )
-      })
+    if (!isEmpty(user)) {
+      fetch(`http://localhost:8000/api/productoorden?idEmpresa=${user.empresa}`)
+        .then((res) => res.json())
+        .then((data) => {
+          let arr = [];
+          Promise.all(
+            data.map((productoOrden) => {
+              fetch(`http://localhost:8000/api/productos/${productoOrden.idProducto}`)
+                .then((res) => res.json())
+                .then((data1) => {
+                  fetch(`http://localhost:8000/api/orden/${productoOrden.idOrden}`)
+                    .then((res) => res.json())
+                    .then((data2) => {
+                      const index = findIndex(data, (dato) => dato.idProducto === data1.id)
+                      data[index].producto = data1;
+                      data[index].no_Orden = data2.no_Orden;
+                      data[index].direccion = data2.direccion;
+                      data[index].fecha_ingreso = data2.fecha_ingreso;
+                      arr = [...arr, data[index]]
+                      setOrders(arr)
+                      setLoading(false)
+                    })
+                })
+            })
+          )
+        })
+    }
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/empresa/${user.empresa}`)
-      .then((res) => res.json())
-      .then((data) => setEmpresa(data))
+    if (!isEmpty(user)) {
+      fetch(`http://localhost:8000/api/empresa/${user.empresa}`)
+        .then((res) => res.json())
+        .then((data) => setEmpresa(data))
+    }
   }, []);
 
   // if (isEmpty(orders)) return <Spin />

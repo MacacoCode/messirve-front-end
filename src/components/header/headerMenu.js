@@ -70,11 +70,16 @@ const HeaderMenu = ({
         )}
       {!isEmpty(user) && (
         <SubMenu title="Cuenta" key="/cuenta" style={{ float: 'right' }}>
-          <MenuItem key="/cuenta/ordenes">
+          <Menu.Item key="/cuenta/ordenes">
             <Link to="/cuenta/ordenes">
               Ordenes
             </Link>
-          </MenuItem>
+          </Menu.Item>
+          <Menu.Item key="/cuenta/productos">
+            <Link to="/cuenta/productos">
+              Administrar Productos
+            </Link>
+          </Menu.Item>
         </SubMenu>
         )}
       {isEmpty(user) && (  
