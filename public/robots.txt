@@ -2,8 +2,8 @@ User-agent: *
 Allow: /home
 Allow: /producto
 Allow: /registrarse
+Allow: /search
 Disallow: /cuenta/ordenes
 Disallow: /cuenta/productos
-Disallow: /search
 Disallow: /orden
 Disallow: /carrito
