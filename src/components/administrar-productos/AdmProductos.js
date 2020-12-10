@@ -130,7 +130,7 @@ const AdmProductos = ({ user }) => {
         <>
           <Space size="middle">
             <Button onClick={() => history.push(`/cuenta/productos/administrar/${record.id}`)} type="primary" shape="round">Editar</Button>
-            <Button onClick={() => borrarProducto(record)} type="primary" danger shape="round">Delete</Button>
+            {/*<Button onClick={() => borrarProducto(record)} type="primary" danger shape="round">Desactivar</Button>*/}
           </Space>
         </>
       )
