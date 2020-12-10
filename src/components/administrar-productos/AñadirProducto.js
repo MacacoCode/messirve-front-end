@@ -45,7 +45,7 @@ const AñadirProducto = ({empresa}) => {
         dropdownRender={(menu) => (
           <>
             {menu}
-            <ModalAñadirProducto modal={modal} openModal={openModal} />
+            <ModalAñadirProducto modal={modal} openModal={openModal} empresa={empresa} />
             <CrearProductoButton history={history} />
           </>
         )}

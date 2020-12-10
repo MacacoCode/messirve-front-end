@@ -2,20 +2,19 @@ import { Button, message, Row, Form, InputNumber } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import React from 'react';
 
-const ModalAñadirProducto = ({ modal, openModal }) => {
-    const añadirProd = () => {
-        console.log(modal.value)
-        /*fetch(`http://localhost:8000/api/empresaproducto`, {
+const ModalAñadirProducto = ({ modal, openModal, empresa }) => {
+    const añadirProd = (values) => {
+        fetch(`http://localhost:8000/api/empresaproducto`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             idEmpresa: empresa,
-            idProducto: value,
+            idProducto: modal.value,
             cantidad: values.cantidad,
             precioBase: values.precioBase
           })
-        }).then((res) => res.json()) */
-        message.success('Producto añadido correctamente!')
+        }).then((res) => res.json())
+          .then((data) => data.id && message.success('Producto añadido correctamente!'))
       };
 
   return (
