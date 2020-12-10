@@ -9,6 +9,7 @@ import './styles.css'
 import TagMedidas from './TagMedidas';
 import CantidadSelector from './carrito/CantidadSelector';
 import { connect } from 'unistore/react';
+import { isEmpty } from 'lodash';
 
 const imageSizing = {
   maxWidth: '-webkit-fill-available',
@@ -115,15 +116,16 @@ const Post = ({
           </Row>
           <Row style={{ marginBottom: 10 }}>
             <Col>
-              Medidas: { medidas ? (
-              <TagMedidas setSelectedMedida={setSelectedMedida} selectedEmpresa={selectedEmpresa} medidas={medidas} />
-              ) : "No Disponible"}
+            {!isEmpty(medidas) ? ( 
+              <> Medidas: <TagMedidas setSelectedMedida={setSelectedMedida} selectedEmpresa={selectedEmpresa} medidas={medidas} /> </>
+              ) : "Sin Medidas"}
             </Col>
           </Row>
           <Row style={{ marginBottom: 10 }}>
             <Col>
               <CantidadSelector setCantidadProductoCarrito={setSelectedCantidad} />
-              {selectedMedida?.cantidad && `/${selectedMedida.cantidad}`}
+              {console.log(title, producto)}
+              {selectedMedida?.cantidad ?  (`/${selectedMedida.cantidad}`) : (`/${producto.empresaproducto_set.find((e) => e.idEmpresa.id === selectedEmpresa.idEmpresa.id)?.cantidad}`)}
             </Col>
           </Row>
         </Col>
