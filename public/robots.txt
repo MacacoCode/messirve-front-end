@@ -5,3 +5,5 @@ Allow: /registrarse
 Disallow: /cuenta/ordenes
 Disallow: /cuenta/productos
 Disallow: /search
+Disallow: /orden
+Disallow: /carrito
