@@ -281,19 +281,7 @@ const EmpresaOrdenes = ({user}) => {
   return (
     <>
       <h1 style={{ textAlign: '-webkit-center', paddingTop: 20 }}>{empresa.nombre}</h1>
-      <div>
-        <h2 style={{ textAlign: '-webkit-center', padding: 20 }}>Usuario: {user.first_name} {user.last_name}</h2>
-        {/*<div>
-          Filtro: 
-          <Select style={{ minWidth: 150 }} onChange={handleFiltros} value={filtro} size="small">
-            <Select.Option key="Ningun Filtro">Ningun Filtro</Select.Option>
-            <Select.Option key="Cliente">Cliente</Select.Option>
-            <Select.Option key="Producto">Producto</Select.Option>
-            <Select.Option key="Fecha de Ingreso">Fecha de Ingreso</Select.Option>
-            <Select.Option key="Estado">Estado</Select.Option>
-          </Select>
-        </div>*/}
-      </div>
+      <h2 style={{ textAlign: '-webkit-center', padding: 20 }}>Usuario: {user.first_name} {user.last_name}</h2>
       <Table loading={loading} onChange={handleTableChange} size="small" columns={columns} dataSource={orders} />
     </>
   );

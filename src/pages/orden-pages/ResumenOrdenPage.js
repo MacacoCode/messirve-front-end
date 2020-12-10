@@ -9,15 +9,15 @@ const ResumenOrdenPage = ({user, carrito, ordenDireccion, altDetalle}) => {
   const params = useParams();
   const history = useHistory();
   if (isEmpty(ordenDireccion) && isEmpty(altDetalle) && !params.idOrden) {
-    message.warning('Necesita comprobar direccion de envío')
+    message.info('Necesita comprobar direccion de envío')
     history.push('/orden/direccion');
   }
   if (isEmpty(carrito) && isEmpty(altDetalle) && !params.idOrden) {
-    message.warning('No se han encontrado productos en su carrito')
+    message.info('Carrito Vacío')
     history.push('/carrito')
   }
   if (params.idOrden && (user.id !== parseInt(params.idUser,10))) {
-    message.warning('No se encontro la orden que esta buscando')
+    message.info('No se encontro la orden que esta buscando')
     history.push("/")
   }
   return (

@@ -12,7 +12,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { Spin } from 'antd'
+import { Spin } from 'antd';
 
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const SearchPage = React.lazy(() => import('./pages/SearchPage'));
@@ -22,6 +22,7 @@ const RegisterPage = React.lazy(() => import('./pages/RegisterPage'));
 const DireccionPage = React.lazy(() => import('./pages/orden-pages/DireccionPage'));
 const ResumenOrdenPage = React.lazy(() => import('./pages/orden-pages/ResumenOrdenPage'));
 const OrdenesPage = React.lazy(() => import('./pages/cuenta-pages/OrdenesPage'));
+const AdmProductosPage = React.lazy(() => import('./pages/cuenta-pages/AdmProductosPage'));
 
 ReactDOM.render(
   <React.StrictMode>
@@ -41,6 +42,7 @@ ReactDOM.render(
             <Route exact path="/orden/direccion" component={DireccionPage} />
             <Route exact path="/orden/resumen-orden/:idUser?/:idOrden?" component={ResumenOrdenPage} />
             <Route exact path="/cuenta/ordenes" component={OrdenesPage}/>
+            <Route exact path="/cuenta/productos/:idProducto?" component={AdmProductosPage} />
           </Switch>
           <Footer />
         </Router>
