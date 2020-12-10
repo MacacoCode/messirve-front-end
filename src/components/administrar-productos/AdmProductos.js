@@ -3,6 +3,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { findIndex, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import AñadirProducto from './AñadirProducto';
+import { useHistory } from 'react-router-dom';
 
 const AdmProductos = ({ user }) => {
   const [productos, setProductos] = useState([]);
@@ -10,6 +11,7 @@ const AdmProductos = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+  const history = useHistory();
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -127,7 +129,7 @@ const AdmProductos = ({ user }) => {
       render: (text, record) => (
         <>
           <Space size="middle">
-            <Button type="primary" shape="round">Editar</Button>
+            <Button onClick={() => history.push(`/cuenta/productos/administrar/${record.id}`)} type="primary" shape="round">Editar</Button>
             <Button onClick={() => borrarProducto(record)} type="primary" danger shape="round">Delete</Button>
           </Space>
         </>

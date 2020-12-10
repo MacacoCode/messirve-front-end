@@ -44,7 +44,7 @@ ReactDOM.render(
             <Route exact path="/orden/resumen-orden/:idUser?/:idOrden?" component={ResumenOrdenPage} />
             <Route exact path="/cuenta/ordenes" component={OrdenesPage}/>
             <Route exact path="/cuenta/productos" component={AdmProductosPage} />
-            <Route exact path="/cuenta/productos/crear/:idProducto?" component={CrearProductoPage} />
+            <Route exact path="/cuenta/productos/administrar/:idProducto?" component={CrearProductoPage} />
           </Switch>
           <Footer />
         </Router>

@@ -7,7 +7,7 @@ import ModalAñadirProducto from './ModalAñadirProducto';
 const CrearProductoButton = ({history}) => (
   <div style={{ textAlign: '-webkit-center' }}>
     <Button 
-      onClick={() => history.push('/cuenta/productos/crear')}
+      onClick={() => history.push('/cuenta/productos/administrar')}
       type="dashed"
       size="small"
     >
