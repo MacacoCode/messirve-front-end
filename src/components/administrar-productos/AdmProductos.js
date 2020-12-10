@@ -1,7 +1,8 @@
-import { Button, Col, Divider, Input, Row, Space, Table } from 'antd';
+import { Button, Col, Divider, Input, Row, Select, Space, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { findIndex, isEmpty } from 'lodash';
 import React, { useEffect, useState } from 'react';
+import AñadirProducto from './AñadirProducto';
 
 const AdmProductos = ({ user }) => {
   const [productos, setProductos] = useState([]);
@@ -171,6 +172,10 @@ const AdmProductos = ({ user }) => {
     <>
       <h1 style={{ textAlign: '-webkit-center', paddingTop: 20 }}>{empresa.nombre}</h1>
       <h2 style={{ textAlign: '-webkit-center', padding: 20 }}>Usuario: {user.first_name} {user.last_name}</h2>
+      <div style={{ float: 'right' }}>
+        <AñadirProducto empresa={user.empresa} />
+        <Button shape="round" style={{backgroundColor: '#1a991c', borderColor: '#1a991c'}} type="primary">Crear Producto</Button>
+      </div>
       <Table loading={loading} columns={columns} dataSource={productos}  />
     </>
   );
