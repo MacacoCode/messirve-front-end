@@ -15,13 +15,13 @@ const imageSizingTendency = {
   width: '100%'
 }
 
-const PostTendencia = ({title, image, description}) => {
+const PostTendencia = ({title, image, description, link}) => {
   return (
     <Card
       title={title}
       extra={(
         <>
-          <Link style={{ marginLeft: 10 }} to={`/search/producto/categoria=${title}`}>More</Link>
+          <Link style={{ marginLeft: 10 }} to={`/search/producto/categoria=Deportes/subcategoria=${title}`}>Ver</Link>
         </>
       )}
       style={{ width:'100%', height:'100%' }}

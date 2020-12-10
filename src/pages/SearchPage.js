@@ -28,15 +28,15 @@ const SearchPage= () => {
 
   return(
     <div style={{ minHeight: 700 }}>
-      {windowSize.width > 550 && (
+      {windowSize.width > 600 && (
       <Col span={4}>
         <SearchFilters setFoundProductos={setFoundProductos} />
       </Col>)}
       <Row>
-        <Col offset={windowSize.width > 550 && 4}>
+        <Col offset={windowSize.width > 600 && 5}>
           <Row>
             {foundProductos ? foundProductos.map((producto) => (
-              <Col span={7}>
+              <Col span={(windowSize.width > 600 && windowSize.width < 1000 && 11) || (windowSize.width >= 1000 && 7)}>
                 <Post
                   noHeight
                   producto={producto}

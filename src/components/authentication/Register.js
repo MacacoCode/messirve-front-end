@@ -96,7 +96,7 @@ const Register = ({ visible, setVisible, setUser }) => {
 
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                Submit
+                Registrarse
                 </Button>
             </Form.Item>
           </Form>

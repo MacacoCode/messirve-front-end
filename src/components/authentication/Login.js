@@ -64,7 +64,7 @@ const Login = ({ visible, setVisible, setUser, setDetalleCarrito }) => {
 
             <Form.Item>
                 <Button type="primary" htmlType="submit">
-                Enviar
+                Iniciar Sesion
                 </Button>
             </Form.Item>
 

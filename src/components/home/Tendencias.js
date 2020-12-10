@@ -10,19 +10,19 @@ import PostTendencia from './PostTendencia';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const lgmdLayout = [
-  { i: '8', x: 1, y: 0, h: 9, w: 4 },
-  { i: '9', x: 5, y: 0, h: 9, w: 4 },
+  { i: '8', x: 1, y: 0, h: 10, w: 4 },
+  { i: '9', x: 5, y: 0, h: 10, w: 4 },
   { i: '10', x: 0, y: 1, h: 1, w: 10 },
 ];
 
 const smLayout = [
-  { i: '8', x: 0, y: 0, h: 9, w: 3 },
-  { i: '9', x: 4, y: 0, h: 9, w: 3 },
+  { i: '8', x: 0, y: 0, h: 10, w: 3 },
+  { i: '9', x: 4, y: 0, h: 10, w: 3 },
   { i: '10', x: 0, y: 1, h: 1, w: 6 },
 ];
 
 const xsxxsLayout = [
-  { i: '8', x: 0, y: 0, h: 9, w: 4 },
+  { i: '8', x: 0, y: 0, h: 10, w: 4 },
   { i: '10', x: 0, y: 1, h: 1, w: 4 },
 ];
 
@@ -57,7 +57,6 @@ const Tendencias = () => {
 
         <div style={currentCols < 6 ? {display:'none'} : null} key='9'> <PostTendencia description="El arte de mover tu cuerpo" title="Calistenia" image={post9} /> </div>
 
-        <div key='10'> <Pagination current={1} size="small" style={{ textAlign: '-webkit-center' }} pageSize={2} total={6}/> </div>
         </ResponsiveGridLayout>
     </>
   );
