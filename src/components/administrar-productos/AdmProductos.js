@@ -152,7 +152,6 @@ const AdmProductos = ({ user }) => {
                   data[index].producto = data1; 
                   arr = [...arr, data[index]];
                   setProductos(arr)
-                  console.log(arr)
                   setLoading(false)
                 })
             }) 
