@@ -174,7 +174,6 @@ const AdmProductos = ({ user }) => {
       <h2 style={{ textAlign: '-webkit-center', padding: 20 }}>Usuario: {user.first_name} {user.last_name}</h2>
       <div style={{ float: 'right' }}>
         <AñadirProducto empresa={user.empresa} />
-        <Button shape="round" style={{backgroundColor: '#1a991c', borderColor: '#1a991c'}} type="primary">Crear Producto</Button>
       </div>
       <Table loading={loading} columns={columns} dataSource={productos}  />
     </>

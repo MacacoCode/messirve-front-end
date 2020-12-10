@@ -149,6 +149,11 @@ a {
     color: #fcb131;;
     background-color: #e6f7ff;
 }
+.ant-btn-dashed:hover, .ant-btn-dashed:focus {
+    color: #fcb131;
+    background: #fff;
+    border-color: #fcb131;
+}
 
 /*CUSTOM STYLES*/
 .greyish-background {

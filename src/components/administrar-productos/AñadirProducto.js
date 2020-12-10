@@ -1,10 +1,24 @@
-import { Select } from 'antd';
+import { Button, Select } from 'antd';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+const CrearProductoButton = ({history}) => (
+  <div style={{ textAlign: '-webkit-center' }}>
+    <Button 
+      onClick={() => history.push('/cuenta/productos/crear')}
+      type="dashed"
+      size="small"
+    >
+      Crear Producto
+    </Button>
+  </div>
+);
 
 const AñadirProducto = ({empresa}) => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
   const openDropdown = (open) => {
     // setLoading(true);
     if (open === true && isEmpty(productos)) {
@@ -18,9 +32,27 @@ const AñadirProducto = ({empresa}) => {
     }
   };
 
+  const añadirProd = (value) => {
+    console.log(value)
+  };
+
   return (
     <>
-      <Select showSearch style={{ minWidth: 250, borderRadius: 20 }} loading={loading} onDropdownVisibleChange={openDropdown} placeholder="Añadir Producto">
+      <Select
+        showSearch
+        style={{ minWidth: 250, borderRadius: 20 }}
+        loading={loading}
+        onDropdownVisibleChange={openDropdown}
+        placeholder="Añadir Producto"
+        optionFilterProp="children"
+        onSelect={añadirProd}
+        dropdownRender={(menu) => (
+          <>
+            {menu}
+            <CrearProductoButton history={history} />
+          </>
+        )}
+      >
         {productos.map((producto) => (
           <Select.Option value={producto.id}>
             {producto.nombre}

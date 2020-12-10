@@ -8,7 +8,6 @@ const ConfirmarOrden = ({
     orden, productos, direccion,
     user, setCarritoItems, 
 }) => {
-  console.log(productos)
   const history = useHistory();
   const handleClick = () => {
     fetch(`http://localhost:8000/api/orden`, {
