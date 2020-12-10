@@ -34,7 +34,7 @@ const ConfirmarOrden = ({
       .then((data) => {
         Promise.all(
             productos.map((prod) => {
-              fetch(`http:/localhost:8000/api/productoorden/${prod.idProductoOrden}`, {
+              fetch(`http://localhost:8000/api/productoorden/${prod.idProductoOrden}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

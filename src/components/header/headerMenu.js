@@ -75,11 +75,13 @@ const HeaderMenu = ({
               Ordenes
             </Link>
           </Menu.Item>
-          <Menu.Item key="/cuenta/productos">
-            <Link to="/cuenta/productos">
-              Administrar Productos
-            </Link>
-          </Menu.Item>
+          {user.empresa && (
+            <Menu.Item key="/cuenta/productos">
+              <Link to="/cuenta/productos">
+                Administrar Productos
+              </Link>
+            </Menu.Item>
+          )}
         </SubMenu>
         )}
       {isEmpty(user) && (  

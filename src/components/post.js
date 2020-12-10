@@ -124,7 +124,9 @@ const Post = ({
           <Row style={{ marginBottom: 10 }}>
             <Col>
               <CantidadSelector setCantidadProductoCarrito={setSelectedCantidad} />
-              {selectedMedida?.cantidad ?  (`/${selectedMedida.cantidad}`) : (`/${producto.empresaproducto_set.find((e) => e.idEmpresa.id === selectedEmpresa.idEmpresa.id)?.cantidad}`)}
+              {selectedMedida?.cantidad ? 
+              (`/${selectedMedida.cantidad}`)
+              : (`/${producto?.empresaproducto_set.find((e) => e.idEmpresa.id === selectedEmpresa.idEmpresa.id)?.cantidad}`)}
             </Col>
           </Row>
         </Col>

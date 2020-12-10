@@ -4,11 +4,14 @@ import SearchFilters from '../components/search/SearchFilters';
 import { useParams } from 'react-router-dom';
 import Post from '../components/post';
 import { findIndex } from 'lodash';
+import useWindowSize from '../hooks/useWindowSize';
 
 const SearchPage= () => {
   const params = useParams();
   const [foundProductos, setFoundProductos] = useState();
-  useEffect(() => {
+  const windowSize = useWindowSize(); 
+
+  useEffect( () => {
     if (params && params.producto) {
       if (!params.categoria && !params.subcategoria) {
         fetch(`http://localhost:8000/api/productos?${params.producto?.replace('producto', 'search')}`)
@@ -24,12 +27,13 @@ const SearchPage= () => {
   }, [params]);
 
   return(
-    <div style={{ minHeight: 700 }}>          
+    <div style={{ minHeight: 700 }}>
+      {windowSize.width > 550 && (
       <Col span={4}>
         <SearchFilters setFoundProductos={setFoundProductos} />
-      </Col>
+      </Col>)}
       <Row>
-        <Col offset={4}>
+        <Col offset={windowSize.width > 550 && 4}>
           <Row>
             {foundProductos ? foundProductos.map((producto) => (
               <Col span={7}>
